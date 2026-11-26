@@ -64,7 +64,10 @@
   </script>
 
   <style>
-    /* ============ View Transition: Ganti Tema ============ */
+    /* ============ Cegah loncat scroll & navbar bergeser ============ */
+    html, body { overflow-anchor: none; }
+
+    /* ============ View Transition (hanya desktop) ============ */
     ::view-transition-old(root),
     ::view-transition-new(root) {
       animation: none;
@@ -74,6 +77,16 @@
     ::view-transition-old(root) { z-index: 1; }
     ::view-transition-new(root) { z-index: 9999; }
     ::view-transition-group(root) { animation-duration: 0.8s; }
+
+    /* Overlay lingkaran untuk HP/tablet (tidak menyentuh layout) */
+    .theme-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      will-change: clip-path;
+      transform: translateZ(0);
+    }
 
     html.theme-switching *,
     html.theme-switching *::before,
@@ -115,7 +128,7 @@
 
     /* ============ Navbar Menyusut saat Scroll ============ */
     #siteNav {
-      transition: height 0.4s cubic-bezier(0.22, 1, 0.36, 1), padding 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+      transition: height 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
     }
     #siteNav.is-scrolled { height: 3.5rem; }
     @media (min-width: 640px) {
@@ -133,11 +146,7 @@
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      background: radial-gradient(
-        280px circle at var(--mx, 50%) var(--my, 50%),
-        rgba(16, 185, 129, 0.13),
-        transparent 60%
-      );
+      background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), rgba(16, 185, 129, 0.13), transparent 60%);
       opacity: 0;
       transition: opacity 0.4s ease;
       pointer-events: none;
@@ -153,12 +162,9 @@
       transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       transition-delay: var(--delay, 0ms);
     }
-    .reveal.is-visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+    .reveal.is-visible { opacity: 1; transform: translateY(0) scale(1); }
 
-    /* ============ Tombol Magnetik & Tekan ============ */
+    /* ============ Tombol ============ */
     .btn-press { transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, filter 0.25s ease; }
     .btn-press:active { transform: scale(0.96); }
 
@@ -170,11 +176,12 @@
       100% { transform: scale(1); opacity: 1; }
     }
 
-    /* ============ Gambar Hasil: Muncul Halus ============ */
+    /* ============ Gambar Hasil ============ */
     .img-reveal { transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
     .img-reveal.is-loading { opacity: 0; transform: scale(0.98); }
+    .zoomable { cursor: zoom-in; }
 
-    /* ============ Overlay Loading (Blur di Belakang) ============ */
+    /* ============ Overlay Loading (Blur) ============ */
     #loadingOverlay {
       position: fixed;
       inset: 0;
@@ -188,15 +195,10 @@
       backdrop-filter: blur(14px) saturate(120%);
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.45s ease, visibility 0.45s ease, backdrop-filter 0.45s ease, -webkit-backdrop-filter 0.45s ease;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
     }
-    .dark #loadingOverlay {
-      background: rgba(27, 30, 37, 0.55);
-    }
-    #loadingOverlay.is-active {
-      opacity: 1;
-      visibility: visible;
-    }
+    .dark #loadingOverlay { background: rgba(27, 30, 37, 0.55); }
+    #loadingOverlay.is-active { opacity: 1; visibility: visible; }
     .loading-card {
       width: 100%;
       max-width: 340px;
@@ -214,33 +216,19 @@
     }
     #loadingOverlay.is-active .loading-card { transform: translateY(0) scale(1); }
 
-    .loader-ring {
-      position: relative;
-      width: 76px;
-      height: 76px;
-      margin: 0 auto 1.25rem;
-    }
-    .loader-ring span {
-      position: absolute;
-      inset: 0;
-      border-radius: 9999px;
-      border: 3px solid transparent;
-    }
+    .loader-ring { position: relative; width: 76px; height: 76px; margin: 0 auto 1.25rem; }
+    .loader-ring span { position: absolute; inset: 0; border-radius: 9999px; border: 3px solid transparent; }
     .loader-ring span:nth-child(1) {
-      border-top-color: #059669;
-      border-right-color: #059669;
+      border-top-color: #059669; border-right-color: #059669;
       animation: spin 1.1s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
     }
     .loader-ring span:nth-child(2) {
       inset: 10px;
-      border-bottom-color: #14b8a6;
-      border-left-color: #14b8a6;
+      border-bottom-color: #14b8a6; border-left-color: #14b8a6;
       animation: spin 1.6s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite reverse;
     }
     .loader-ring span:nth-child(3) {
-      inset: 24px;
-      background: #059669;
-      border: none;
+      inset: 24px; background: #059669; border: none;
       animation: pulseDot 1.1s ease-in-out infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -273,13 +261,9 @@
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
-
-    .loader-step {
-      transition: opacity 0.35s ease, transform 0.35s ease;
-    }
+    .loader-step { transition: opacity 0.35s ease, transform 0.35s ease; }
     .loader-step.is-swapping { opacity: 0; transform: translateY(6px); }
 
-    /* ============ Tombol Proses: Shimmer saat Loading ============ */
     #btnProses { position: relative; overflow: hidden; }
     #btnProses.is-loading::after {
       content: "";
@@ -289,6 +273,117 @@
       background-size: 200% 100%;
       animation: shimmer 1.4s linear infinite;
       pointer-events: none;
+    }
+
+    /* ============ Modal Zoom Gambar ============ */
+    .lb-root {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    .lb-root.is-open { opacity: 1; visibility: visible; }
+    .lb-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+    .lb-card {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      height: min(86vh, 820px);
+      display: flex;
+      flex-direction: column;
+      border-radius: 1.5rem;
+      background: #0f1216;
+      overflow: hidden;
+      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.6);
+      transform: translateY(22px) scale(0.94);
+      opacity: 0;
+      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    }
+    .lb-root.is-open .lb-card { transform: translateY(0) scale(1); opacity: 1; }
+    .lb-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .lb-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+    .lb-tools { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; }
+    .lb-btn {
+      min-width: 36px;
+      min-height: 36px;
+      padding: 0 0.6rem;
+      border-radius: 0.75rem;
+      color: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+    .lb-btn:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
+    .lb-btn:active { transform: scale(0.92); }
+    .lb-zoom-label {
+      min-width: 52px;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #6ee7b7;
+      font-variant-numeric: tabular-nums;
+    }
+    .lb-stage {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      cursor: zoom-in;
+      background: radial-gradient(circle at center, #151a20 0%, #0a0c10 100%);
+    }
+    .lb-stage.is-zoomed { cursor: grab; }
+    .lb-stage.is-dragging { cursor: grabbing; }
+    .lb-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transform-origin: center center;
+      will-change: transform;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      -webkit-user-drag: none;
+      pointer-events: none;
+      border-radius: 0.75rem;
+    }
+    .lb-img.no-anim { transition: none; }
+    .lb-hint {
+      text-align: center;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.5);
+      padding: 0.6rem 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     /* ============ Accessibility: Kurangi Gerakan ============ */
@@ -311,7 +406,7 @@
   <div class="ambient-orb orb-1" aria-hidden="true"></div>
   <div class="ambient-orb orb-2" aria-hidden="true"></div>
 
-  <!-- Overlay Loading dengan Blur -->
+  <!-- Overlay Loading -->
   <div id="loadingOverlay" role="status" aria-live="polite" aria-hidden="true">
     <div class="loading-card">
       <div class="loader-ring" aria-hidden="true">
@@ -326,8 +421,8 @@
     </div>
   </div>
 
-  <!-- Wadah Notifikasi Toast -->
-  <div id="toastContainer" class="fixed top-24 right-4 left-4 sm:left-auto sm:top-24 sm:right-6 z-[70] flex flex-col gap-2.5 sm:max-w-sm w-auto sm:w-full pointer-events-none"></div>
+  <!-- Toast -->
+  <div id="toastContainer" class="fixed top-24 right-4 left-4 sm:left-auto sm:top-24 sm:right-6 z-[90] flex flex-col gap-2.5 sm:max-w-sm w-auto sm:w-full pointer-events-none"></div>
 
   <!-- Navigasi Pill -->
   <header class="sticky top-3.5 sm:top-5 z-40 px-3.5 sm:px-6 lg:px-8">
@@ -342,9 +437,7 @@
         <div class="truncate">
           <div class="flex items-center gap-2">
             <span class="font-bold text-sm sm:text-base tracking-tight text-slate-900 dark:text-white truncate">RiceVision</span>
-            <span class="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#E8ECEF] dark:bg-[#1B1E25] text-slate-600 dark:text-slate-300 shadow-neu-inset dark:shadow-dark-neu-inset">
-              UAS Pengolahan Citra
-            </span>
+            <span class="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#E8ECEF] dark:bg-[#1B1E25] text-slate-600 dark:text-slate-300 shadow-neu-inset dark:shadow-dark-neu-inset">UAS Pengolahan Citra</span>
           </div>
           <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">Top-Hat &bull; Otsu &bull; Segmentasi Adaptif</p>
         </div>
@@ -394,7 +487,6 @@
         </p>
       </div>
 
-      <!-- Tombol Ekspor -->
       <div id="actionToolbar" class="hidden grid grid-cols-3 sm:flex sm:flex-wrap items-center gap-2.5 w-full lg:w-auto animate-fade-in">
         <button id="btnCopySummary" type="button" class="btn-press min-h-[42px] inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm active:shadow-neu-inset dark:active:shadow-dark-neu-inset text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 hover:-translate-y-0.5">
           <svg class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
@@ -421,7 +513,7 @@
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-fade-up-delay motion-reduce:animate-none">
 
       <!-- Kartu Upload -->
-      <div class="reveal spot-card lg:col-span-7 bg-[#E8ECEF] dark:bg-[#1B1E25] rounded-3xl p-5 sm:p-7 shadow-neu-flat dark:shadow-dark-neu-flat flex flex-col justify-between transition-shadow duration-300">
+      <div class="reveal spot-card lg:col-span-7 bg-[#E8ECEF] dark:bg-[#1B1E25] rounded-3xl p-5 sm:p-7 shadow-neu-flat dark:shadow-dark-neu-flat flex flex-col justify-between">
         <div class="flex items-center justify-between gap-2 mb-5">
           <div class="flex items-center gap-3 min-w-0">
             <span class="w-8 h-8 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">1</span>
@@ -435,7 +527,6 @@
           </button>
         </div>
 
-        <!-- Dropzone -->
         <div id="dropzone" class="relative group flex-1 min-h-[215px] sm:min-h-[255px] rounded-2xl bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset p-5 sm:p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300">
           <input type="file" id="fileInput" accept="image/*" class="hidden" />
 
@@ -474,7 +565,7 @@
       </div>
 
       <!-- Kartu Parameter -->
-      <div class="reveal spot-card lg:col-span-5 bg-[#E8ECEF] dark:bg-[#1B1E25] rounded-3xl p-5 sm:p-7 shadow-neu-flat dark:shadow-dark-neu-flat flex flex-col justify-between gap-5 transition-shadow duration-300" style="--delay: 120ms">
+      <div class="reveal spot-card lg:col-span-5 bg-[#E8ECEF] dark:bg-[#1B1E25] rounded-3xl p-5 sm:p-7 shadow-neu-flat dark:shadow-dark-neu-flat flex flex-col justify-between gap-5" style="--delay: 120ms">
         <div class="space-y-4">
           <div class="flex items-center gap-3">
             <span class="w-8 h-8 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">2</span>
@@ -541,9 +632,7 @@
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse"></span>
           Ringkasan Hasil Penghitungan
         </h2>
-        <span id="procTimeBadge" class="text-xs font-medium text-slate-600 dark:text-slate-300 px-3.5 py-1 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm">
-          Waktu proses: - ms
-        </span>
+        <span id="procTimeBadge" class="text-xs font-medium text-slate-600 dark:text-slate-300 px-3.5 py-1 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm">Waktu proses: - ms</span>
       </div>
 
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
@@ -605,7 +694,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Visualisasi Tahapan Citra</h2>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Ketuk gambar untuk memperbesar detail penomoran butir.</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Ketuk gambar untuk memperbesar dan memeriksa detail penomoran butir.</p>
         </div>
 
         <div class="relative grid grid-cols-2 p-1.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset w-full sm:w-[330px] select-none">
@@ -621,7 +710,7 @@
             <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">A. Citra Input (Asli)</h3>
             <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset text-slate-500 dark:text-slate-400 shrink-0">RGB</span>
           </div>
-          <div class="relative group rounded-2xl overflow-hidden bg-black p-1.5 shadow-neu-inset dark:shadow-dark-neu-inset cursor-zoom-in" onclick="openLightbox('imgAsli', 'A. Citra Input (Sebelum Pengolahan)')">
+          <div class="relative group zoomable rounded-2xl overflow-hidden bg-black p-1.5 shadow-neu-inset dark:shadow-dark-neu-inset" data-zoom="imgAsli" data-title="A. Citra Input (Asli)" tabindex="0" role="button" aria-label="Perbesar citra input">
             <img id="imgAsli" alt="Citra input asli" class="img-reveal w-full h-56 sm:h-64 md:h-72 object-contain rounded-xl group-hover:scale-[1.03]" />
             <div class="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-[11px] font-medium sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">Perbesar</div>
           </div>
@@ -632,7 +721,7 @@
             <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">B. Mask Biner (Top-Hat)</h3>
             <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset text-slate-500 dark:text-slate-400 shrink-0">Biner</span>
           </div>
-          <div class="relative group rounded-2xl overflow-hidden bg-black p-1.5 shadow-neu-inset dark:shadow-dark-neu-inset cursor-zoom-in" onclick="openLightbox('imgBiner', 'B. Mask Biner (Top-Hat + Thresholding Otsu)')">
+          <div class="relative group zoomable rounded-2xl overflow-hidden bg-black p-1.5 shadow-neu-inset dark:shadow-dark-neu-inset" data-zoom="imgBiner" data-title="B. Mask Biner (Top-Hat + Thresholding Otsu)" tabindex="0" role="button" aria-label="Perbesar mask biner">
             <img id="imgBiner" alt="Mask biner hasil segmentasi" class="img-reveal w-full h-56 sm:h-64 md:h-72 object-contain rounded-xl group-hover:scale-[1.03]" />
             <div class="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-[11px] font-medium sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">Perbesar</div>
           </div>
@@ -646,7 +735,7 @@
               <span class="inline-flex items-center gap-1 text-amber-700 dark:text-amber-400"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Klaster</span>
             </div>
           </div>
-          <div class="relative group rounded-2xl overflow-hidden bg-black p-1.5 shadow-neu-inset dark:shadow-dark-neu-inset cursor-zoom-in" onclick="openLightbox('imgHasil', 'C. Hasil Segmentasi &amp; Penomoran Butir Beras')">
+          <div class="relative group zoomable rounded-2xl overflow-hidden bg-black p-1.5 shadow-neu-inset dark:shadow-dark-neu-inset" data-zoom="imgHasil" data-title="C. Hasil Segmentasi &amp; Penomoran Butir Beras" tabindex="0" role="button" aria-label="Perbesar hasil segmentasi">
             <img id="imgHasil" alt="Hasil segmentasi dan penomoran beras" class="img-reveal w-full h-56 sm:h-64 md:h-72 object-contain rounded-xl group-hover:scale-[1.03]" />
             <div class="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-emerald-700/85 backdrop-blur-md text-white text-[11px] font-medium sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">Perbesar</div>
           </div>
@@ -733,20 +822,24 @@
     </svg>
   </button>
 
-  <!-- Modal Lightbox -->
-  <div id="lightboxModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 animate-fade-in" role="dialog" aria-modal="true">
-    <div id="lightboxCard" class="relative max-w-5xl w-full bg-slate-900/95 border border-white/15 rounded-3xl overflow-hidden shadow-2xl animate-scale-in">
-      <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-white/10">
-        <h3 id="lightboxTitle" class="text-xs sm:text-sm font-semibold text-white truncate pr-4">Pratinjau Citra</h3>
-        <button id="btnCloseLightbox" type="button" class="btn-press min-w-[38px] min-h-[38px] p-2 rounded-xl text-white/75 hover:text-white hover:bg-white/10 flex items-center justify-center" aria-label="Tutup pratinjau">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+  <!-- Modal Zoom Gambar -->
+  <div id="lightboxModal" class="lb-root" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
+    <div class="lb-backdrop" data-close="1"></div>
+    <div class="lb-card">
+      <div class="lb-head">
+        <h3 id="lightboxTitle" class="lb-title">Pratinjau Citra</h3>
+        <div class="lb-tools">
+          <button id="lbZoomOut" type="button" class="lb-btn" aria-label="Perkecil">&minus;</button>
+          <span id="lbZoomLabel" class="lb-zoom-label">100%</span>
+          <button id="lbZoomIn" type="button" class="lb-btn" aria-label="Perbesar">+</button>
+          <button id="lbReset" type="button" class="lb-btn" aria-label="Atur ulang">Reset</button>
+          <button id="btnCloseLightbox" type="button" class="lb-btn" aria-label="Tutup pratinjau">&times;</button>
+        </div>
       </div>
-      <div class="bg-black flex items-center justify-center p-3 sm:p-4 max-h-[82vh] overflow-auto">
-        <img id="lightboxImg" alt="Zoom pratinjau citra" class="max-w-full max-h-[74vh] object-contain rounded-xl" />
+      <div id="lbStage" class="lb-stage">
+        <img id="lightboxImg" alt="Zoom pratinjau citra" class="lb-img" draggable="false" />
       </div>
+      <p class="lb-hint">Scroll atau cubit untuk zoom &bull; ketuk dua kali untuk zoom cepat &bull; seret untuk menggeser</p>
     </div>
   </div>
 
@@ -808,6 +901,11 @@
     const lightboxImg = document.getElementById("lightboxImg");
     const lightboxTitle = document.getElementById("lightboxTitle");
     const btnCloseLightbox = document.getElementById("btnCloseLightbox");
+    const lbStage = document.getElementById("lbStage");
+    const lbZoomIn = document.getElementById("lbZoomIn");
+    const lbZoomOut = document.getElementById("lbZoomOut");
+    const lbReset = document.getElementById("lbReset");
+    const lbZoomLabel = document.getElementById("lbZoomLabel");
 
     let selectedFile = null;
     let lastResult = null;
@@ -817,9 +915,15 @@
 
     const DARK_BG = "#1B1E25";
     const LIGHT_BG = "#E8ECEF";
+    const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
     const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
     /* ================= UTILITAS ================= */
+
+    function esc(v) {
+      return String(v).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+    }
 
     function showToast(message, type = "info") {
       const container = document.getElementById("toastContainer");
@@ -841,10 +945,6 @@
       if (!toast.isConnected) return;
       toast.classList.add("opacity-0", "-translate-y-2");
       setTimeout(() => toast.remove(), 300);
-    }
-
-    function esc(v) {
-      return String(v).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
     }
 
     function formatBytes(bytes) {
@@ -885,8 +985,41 @@
       } catch (e) {}
     })();
 
+    /**
+     * Animasi lingkaran dengan overlay fixed (dipakai di HP/tablet).
+     * Overlay tidak menyentuh layout, jadi navbar tidak ikut bergeser.
+     */
+    function overlayReveal(x, y, radius, bg, applyFn) {
+      return new Promise((resolve) => {
+        const ov = document.createElement("div");
+        ov.className = "theme-overlay";
+        ov.style.background = bg;
+        document.body.appendChild(ov);
+
+        const anim = ov.animate(
+          [
+            { clipPath: `circle(0px at ${x}px ${y}px)` },
+            { clipPath: `circle(${radius}px at ${x}px ${y}px)` },
+          ],
+          { duration: 750, easing: EASE, fill: "forwards" }
+        );
+
+        anim.onfinish = () => {
+          htmlEl.classList.add("theme-switching");
+          applyFn();
+          void document.body.offsetHeight;
+          ov.remove();
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            htmlEl.classList.remove("theme-switching");
+          }));
+          resolve();
+        };
+      });
+    }
+
     btnTheme.addEventListener("click", async () => {
       if (isThemeTransitioning) return;
+      btnTheme.blur();
 
       const rect = btnTheme.getBoundingClientRect();
       const x = rect.left + rect.width / 2;
@@ -895,8 +1028,6 @@
 
       const willBeDark = !htmlEl.classList.contains("dark");
       const targetBg = willBeDark ? DARK_BG : LIGHT_BG;
-      const easing = "cubic-bezier(0.22, 1, 0.36, 1)";
-      const clipFrames = [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`];
 
       const applyThemeState = () => {
         htmlEl.classList.toggle("dark", willBeDark);
@@ -910,29 +1041,22 @@
       }
 
       isThemeTransitioning = true;
+      const useViewTransition = !isTouchDevice && !!document.startViewTransition;
 
-      if (document.startViewTransition) {
+      if (useViewTransition) {
         htmlEl.classList.add("theme-switching");
         const vt = document.startViewTransition(() => applyThemeState());
         try {
           await vt.ready;
           htmlEl.animate(
-            { clipPath: clipFrames },
-            { duration: 800, easing, pseudoElement: "::view-transition-new(root)" }
+            { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`] },
+            { duration: 800, easing: EASE, pseudoElement: "::view-transition-new(root)" }
           );
         } catch (e) {}
         await vt.finished.catch(() => {});
         htmlEl.classList.remove("theme-switching");
       } else {
-        const overlay = document.createElement("div");
-        overlay.style.cssText = `position:fixed;inset:0;z-index:9998;pointer-events:none;background:${targetBg};clip-path:circle(0px at ${x}px ${y}px);`;
-        document.body.appendChild(overlay);
-        const anim = overlay.animate({ clipPath: clipFrames }, { duration: 800, easing, fill: "forwards" });
-        await anim.finished.catch(() => {});
-        htmlEl.classList.add("theme-switching");
-        applyThemeState();
-        overlay.remove();
-        requestAnimationFrame(() => htmlEl.classList.remove("theme-switching"));
+        await overlayReveal(x, y, endRadius, targetBg, applyThemeState);
       }
 
       isThemeTransitioning = false;
@@ -943,7 +1067,7 @@
       if (activeIcon && activeIcon.animate) {
         activeIcon.animate(
           [{ transform: "rotate(-120deg) scale(0.6)" }, { transform: "rotate(0deg) scale(1)" }],
-          { duration: 450, easing }
+          { duration: 450, easing: EASE }
         );
       }
     });
@@ -978,7 +1102,6 @@
       btnProses.classList.add("is-loading");
       setLoadingPct(0);
 
-      // Progres semu sampai server merespons (berhenti di 92%)
       let pct = 0;
       clearInterval(loadingTimer);
       loadingTimer = setInterval(() => {
@@ -1011,7 +1134,7 @@
       btnProses.classList.remove("is-loading");
     }
 
-    /* ================= NAVBAR MENYUSUT SAAT SCROLL ================= */
+    /* ================= NAVBAR & SCROLL ================= */
 
     function updateNavOnScroll() {
       if (window.scrollY > 40) siteNav.classList.add("is-scrolled");
@@ -1051,7 +1174,7 @@
     }
     observeReveals();
 
-    /* ================= EFEK SOROT KURSOR PADA KARTU ================= */
+    /* ================= SOROT KURSOR PADA KARTU ================= */
 
     document.querySelectorAll(".spot-card").forEach((card) => {
       card.addEventListener("pointermove", (e) => {
@@ -1094,7 +1217,6 @@
     fileInput.addEventListener("change", () => {
       if (fileInput.files.length > 0) handleFileSelect(fileInput.files[0]);
     });
-
     dropzone.addEventListener("dragover", (e) => {
       e.preventDefault();
       dropzone.classList.add("ring-2", "ring-emerald-600/50");
@@ -1277,15 +1399,9 @@
 
       viewCompare.classList.toggle("hidden", isGrid);
       viewGrid.classList.toggle("hidden", !isGrid);
-      if (!isGrid) {
-        viewCompare.classList.remove("is-visible");
-        requestAnimationFrame(() => viewCompare.classList.add("is-visible"));
-      }
     }
     tabGrid.addEventListener("click", () => setTab("grid"));
     tabCompare.addEventListener("click", () => setTab("compare"));
-
-    /* ================= SLIDER PERBANDINGAN ================= */
 
     compareRange.addEventListener("input", () => {
       const val = compareRange.value;
@@ -1385,28 +1501,199 @@
       showToast("Laporan CSV berhasil diunduh.", "success");
     });
 
-    /* ================= LIGHTBOX ================= */
+    /* ================= MODAL ZOOM ================= */
 
-    window.openLightbox = function (imgId, title) {
+    const lb = { scale: 1, x: 0, y: 0, min: 1, max: 5 };
+    let lbOpen = false;
+
+    function lbApply(animate = true) {
+      lbImg.classList.toggle("no-anim", !animate);
+      lbImg.style.transform = `translate3d(${lb.x}px, ${lb.y}px, 0) scale(${lb.scale})`;
+      lbZoomLabel.textContent = `${Math.round(lb.scale * 100)}%`;
+      lbStage.classList.toggle("is-zoomed", lb.scale > 1.001);
+    }
+
+    function lbClampPan() {
+      if (lb.scale <= 1) { lb.x = 0; lb.y = 0; return; }
+      const sw = lbImg.offsetWidth * lb.scale;
+      const sh = lbImg.offsetHeight * lb.scale;
+      const maxX = Math.max(0, (sw - lbStage.clientWidth) / 2);
+      const maxY = Math.max(0, (sh - lbStage.clientHeight) / 2);
+      lb.x = Math.min(maxX, Math.max(-maxX, lb.x));
+      lb.y = Math.min(maxY, Math.max(-maxY, lb.y));
+    }
+
+    /** Zoom ke titik tertentu (koordinat layar). Tanpa titik = pusat stage. */
+    function lbZoomTo(newScale, clientX, clientY, animate = true) {
+      const rect = lbStage.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const px = (clientX ?? cx) - cx;
+      const py = (clientY ?? cy) - cy;
+
+      const ns = Math.min(lb.max, Math.max(lb.min, newScale));
+      const ratio = ns / lb.scale;
+      lb.x = px - (px - lb.x) * ratio;
+      lb.y = py - (py - lb.y) * ratio;
+      lb.scale = ns;
+      lbClampPan();
+      lbApply(animate);
+    }
+
+    function lbReset(animate = true) {
+      lb.scale = 1; lb.x = 0; lb.y = 0;
+      lbApply(animate);
+    }
+
+    lbZoomIn.addEventListener("click", () => lbZoomTo(lb.scale * 1.4, null, null, true));
+    lbZoomOut.addEventListener("click", () => {
+      const next = lb.scale / 1.4;
+      if (next <= 1.02) lbReset(true);
+      else lbZoomTo(next, null, null, true);
+    });
+    lbReset.addEventListener("click", () => lbReset(true));
+
+    // Roda mouse / trackpad: zoom ke arah kursor
+    lbStage.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const factor = Math.exp(-e.deltaY * 0.0018);
+      const next = lb.scale * factor;
+      if (next <= 1.02) lbReset(true);
+      else lbZoomTo(next, e.clientX, e.clientY, false);
+    }, { passive: false });
+
+    // Pointer: seret, cubit (pinch), dan ketuk dua kali
+    const pts = new Map();
+    let pinch = null;
+    let panOrigin = null;
+    let downPos = null;
+    let lastTap = { t: 0, x: 0, y: 0 };
+    const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+    lbStage.addEventListener("pointerdown", (e) => {
+      lbStage.setPointerCapture(e.pointerId);
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      if (pts.size === 1) {
+        downPos = { x: e.clientX, y: e.clientY };
+        panOrigin = { x: e.clientX - lb.x, y: e.clientY - lb.y };
+      }
+      if (pts.size === 2) {
+        const [a, b] = [...pts.values()];
+        pinch = { d: dist(a, b), s: lb.scale };
+        lbStage.classList.add("is-dragging");
+      }
+    });
+
+    lbStage.addEventListener("pointermove", (e) => {
+      if (!pts.has(e.pointerId)) return;
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      if (pts.size === 2 && pinch) {
+        const [a, b] = [...pts.values()];
+        const cx = (a.x + b.x) / 2;
+        const cy = (a.y + b.y) / 2;
+        lbZoomTo(pinch.s * (dist(a, b) / pinch.d), cx, cy, false);
+      } else if (pts.size === 1 && lb.scale > 1.001 && panOrigin) {
+        lb.x = e.clientX - panOrigin.x;
+        lb.y = e.clientY - panOrigin.y;
+        lbClampPan();
+        lbApply(false);
+      }
+    });
+
+    function endPointer(e, isCancel = false) {
+      if (!pts.has(e.pointerId)) return;
+      const wasSingle = pts.size === 1;
+      pts.delete(e.pointerId);
+
+      if (pts.size === 1) {
+        const [p] = pts.values();
+        panOrigin = { x: p.x - lb.x, y: p.y - lb.y };
+        pinch = null;
+      }
+
+      if (pts.size === 0) {
+        lbStage.classList.remove("is-dragging");
+        if (lb.scale < 1.02) lbReset(true);
+
+        const moved = downPos ? dist(downPos, { x: e.clientX, y: e.clientY }) : 999;
+        if (!isCancel && wasSingle && moved < 10) handleTap(e);
+        downPos = null;
+      }
+    }
+
+    lbStage.addEventListener("pointerup", (e) => endPointer(e, false));
+    lbStage.addEventListener("pointercancel", (e) => endPointer(e, true));
+
+    function handleTap(e) {
+      const now = Date.now();
+      const isDouble =
+        now - lastTap.t < 300 &&
+        Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 30;
+
+      if (isDouble) {
+        lastTap.t = 0;
+        if (lb.scale > 1.02) lbReset(true);
+        else lbZoomTo(2.5, e.clientX, e.clientY, true);
+      } else {
+        lastTap = { t: now, x: e.clientX, y: e.clientY };
+      }
+    }
+
+    window.addEventListener("resize", () => {
+      if (lbOpen) { lbClampPan(); lbApply(false); }
+    });
+
+    function openLightbox(imgId, title) {
       const src = document.getElementById(imgId).src;
       if (!src) return;
+
       lightboxImg.src = src;
       lightboxTitle.textContent = title;
-      lightboxModal.classList.remove("hidden");
+      lbReset(false);
+
+      lightboxModal.classList.add("is-open");
+      lbOpen = true;
       document.body.classList.add("overflow-hidden");
-    };
+    }
 
     function closeLightbox() {
-      lightboxModal.classList.add("hidden");
+      if (!lbOpen) return;
+      lightboxModal.classList.remove("is-open");
+      lbOpen = false;
       document.body.classList.remove("overflow-hidden");
     }
 
+    document.querySelectorAll(".zoomable").forEach((el) => {
+      const open = () => openLightbox(el.dataset.zoom, el.dataset.title);
+      el.addEventListener("click", open);
+      el.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open();
+        }
+      });
+    });
+
     btnCloseLightbox.addEventListener("click", closeLightbox);
     lightboxModal.addEventListener("click", (e) => {
-      if (e.target === lightboxModal) closeLightbox();
+      if (e.target.dataset.close === "1") closeLightbox();
     });
+
     document.addEventListener("keydown", (e) => {
+      if (!lbOpen) {
+        if (e.key === "Escape") closeLightbox();
+        return;
+      }
       if (e.key === "Escape") closeLightbox();
+      else if (e.key === "+" || e.key === "=") lbZoomTo(lb.scale * 1.25, null, null, true);
+      else if (e.key === "-") {
+        const next = lb.scale / 1.25;
+        if (next <= 1.02) lbReset(true);
+        else lbZoomTo(next, null, null, true);
+      }
+      else if (e.key === "0") lbReset(true);
     });
   </script>
 </body>
