@@ -155,14 +155,14 @@
     .spot-card:hover::before { opacity: 1; }
     .spot-card > * { position: relative; z-index: 1; }
 
-    /* ============ Reveal Saat Scroll ============ */
-    .reveal {
+    /* ============ Reveal Saat Scroll (aman: hanya aktif jika JS berjalan) ============ */
+    .js-ready .reveal {
       opacity: 0;
       transform: translateY(24px) scale(0.985);
       transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       transition-delay: var(--delay, 0ms);
     }
-    .reveal.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+    .js-ready .reveal.is-visible { opacity: 1; transform: translateY(0) scale(1); }
 
     /* ============ Tombol ============ */
     .btn-press { transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, filter 0.25s ease; }
@@ -395,7 +395,7 @@
         scroll-behavior: auto !important;
       }
       .ambient-orb { animation: none !important; }
-      .reveal { opacity: 1; transform: none; }
+      .js-ready .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
@@ -832,7 +832,7 @@
           <button id="lbZoomOut" type="button" class="lb-btn" aria-label="Perkecil">&minus;</button>
           <span id="lbZoomLabel" class="lb-zoom-label">100%</span>
           <button id="lbZoomIn" type="button" class="lb-btn" aria-label="Perbesar">+</button>
-          <button id="lbReset" type="button" class="lb-btn" aria-label="Atur ulang">Reset</button>
+          <button id="btnLbReset" type="button" class="lb-btn" aria-label="Atur ulang">Reset</button>
           <button id="btnCloseLightbox" type="button" class="lb-btn" aria-label="Tutup pratinjau">&times;</button>
         </div>
       </div>
@@ -844,6 +844,8 @@
   </div>
 
   <script>
+    document.documentElement.classList.add("js-ready");
+
     const htmlEl = document.documentElement;
     const btnTheme = document.getElementById("btnTheme");
     const btnScrollTop = document.getElementById("btnScrollTop");
@@ -904,7 +906,7 @@
     const lbStage = document.getElementById("lbStage");
     const lbZoomIn = document.getElementById("lbZoomIn");
     const lbZoomOut = document.getElementById("lbZoomOut");
-    const lbReset = document.getElementById("lbReset");
+    const btnLbReset = document.getElementById("btnLbReset");
     const lbZoomLabel = document.getElementById("lbZoomLabel");
 
     let selectedFile = null;
@@ -986,7 +988,7 @@
     })();
 
     /**
-     * Animasi lingkaran dengan overlay fixed (dipakai di HP/tablet).
+     * Lingkaran dengan overlay fixed (dipakai di HP/tablet).
      * Overlay tidak menyentuh layout, jadi navbar tidak ikut bergeser.
      */
     function overlayReveal(x, y, radius, bg, applyFn) {
@@ -1507,16 +1509,16 @@
     let lbOpen = false;
 
     function lbApply(animate = true) {
-      lbImg.classList.toggle("no-anim", !animate);
-      lbImg.style.transform = `translate3d(${lb.x}px, ${lb.y}px, 0) scale(${lb.scale})`;
+      lightboxImg.classList.toggle("no-anim", !animate);
+      lightboxImg.style.transform = `translate3d(${lb.x}px, ${lb.y}px, 0) scale(${lb.scale})`;
       lbZoomLabel.textContent = `${Math.round(lb.scale * 100)}%`;
       lbStage.classList.toggle("is-zoomed", lb.scale > 1.001);
     }
 
     function lbClampPan() {
       if (lb.scale <= 1) { lb.x = 0; lb.y = 0; return; }
-      const sw = lbImg.offsetWidth * lb.scale;
-      const sh = lbImg.offsetHeight * lb.scale;
+      const sw = lightboxImg.offsetWidth * lb.scale;
+      const sh = lightboxImg.offsetHeight * lb.scale;
       const maxX = Math.max(0, (sw - lbStage.clientWidth) / 2);
       const maxY = Math.max(0, (sh - lbStage.clientHeight) / 2);
       lb.x = Math.min(maxX, Math.max(-maxX, lb.x));
@@ -1540,7 +1542,7 @@
       lbApply(animate);
     }
 
-    function lbReset(animate = true) {
+    function lbResetZoom(animate = true) {
       lb.scale = 1; lb.x = 0; lb.y = 0;
       lbApply(animate);
     }
@@ -1548,17 +1550,17 @@
     lbZoomIn.addEventListener("click", () => lbZoomTo(lb.scale * 1.4, null, null, true));
     lbZoomOut.addEventListener("click", () => {
       const next = lb.scale / 1.4;
-      if (next <= 1.02) lbReset(true);
+      if (next <= 1.02) lbResetZoom(true);
       else lbZoomTo(next, null, null, true);
     });
-    lbReset.addEventListener("click", () => lbReset(true));
+    btnLbReset.addEventListener("click", () => lbResetZoom(true));
 
     // Roda mouse / trackpad: zoom ke arah kursor
     lbStage.addEventListener("wheel", (e) => {
       e.preventDefault();
       const factor = Math.exp(-e.deltaY * 0.0018);
       const next = lb.scale * factor;
-      if (next <= 1.02) lbReset(true);
+      if (next <= 1.02) lbResetZoom(true);
       else lbZoomTo(next, e.clientX, e.clientY, false);
     }, { passive: false });
 
@@ -1615,7 +1617,7 @@
 
       if (pts.size === 0) {
         lbStage.classList.remove("is-dragging");
-        if (lb.scale < 1.02) lbReset(true);
+        if (lb.scale < 1.02) lbResetZoom(true);
 
         const moved = downPos ? dist(downPos, { x: e.clientX, y: e.clientY }) : 999;
         if (!isCancel && wasSingle && moved < 10) handleTap(e);
@@ -1634,7 +1636,7 @@
 
       if (isDouble) {
         lastTap.t = 0;
-        if (lb.scale > 1.02) lbReset(true);
+        if (lb.scale > 1.02) lbResetZoom(true);
         else lbZoomTo(2.5, e.clientX, e.clientY, true);
       } else {
         lastTap = { t: now, x: e.clientX, y: e.clientY };
@@ -1651,7 +1653,7 @@
 
       lightboxImg.src = src;
       lightboxTitle.textContent = title;
-      lbReset(false);
+      lbResetZoom(false);
 
       lightboxModal.classList.add("is-open");
       lbOpen = true;
@@ -1682,18 +1684,15 @@
     });
 
     document.addEventListener("keydown", (e) => {
-      if (!lbOpen) {
-        if (e.key === "Escape") closeLightbox();
-        return;
-      }
+      if (!lbOpen) return;
       if (e.key === "Escape") closeLightbox();
       else if (e.key === "+" || e.key === "=") lbZoomTo(lb.scale * 1.25, null, null, true);
       else if (e.key === "-") {
         const next = lb.scale / 1.25;
-        if (next <= 1.02) lbReset(true);
+        if (next <= 1.02) lbResetZoom(true);
         else lbZoomTo(next, null, null, true);
       }
-      else if (e.key === "0") lbReset(true);
+      else if (e.key === "0") lbResetZoom(true);
     });
   </script>
 </body>
