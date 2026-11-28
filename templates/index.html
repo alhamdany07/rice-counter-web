@@ -2,7 +2,8 @@
 <html lang="id" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#E8ECEF" />
   <title>RiceVision — Sistem Penghitung Butiran Beras</title>
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23059669'/%3E%3Cstop offset='100%25' stop-color='%230f766e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='url(%23g)'/%3E%3Cpath d='M16 24v-4a4 4 0 0 1 4-4h4m16 0h4a4 4 0 0 1 4 4v4m0 16v4a4 4 0 0 1-4 4h-4M24 48h-4a4 4 0 0 1-4-4v-4' fill='none' stroke='%23ffffff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.85'/%3E%3Cellipse cx='32' cy='32' rx='11' ry='5.5' transform='rotate(-38 32 32)' fill='%23ffffff'/%3E%3C/svg%3E" />
@@ -17,28 +18,21 @@
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
-          colors: {
-            base: { light: '#E8ECEF', dark: '#1B1E25' },
-          },
+          fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
           boxShadow: {
-            'neu-flat': '8px 8px 18px #cbd2d9, -8px -8px 18px #ffffff',
-            'neu-sm': '4px 4px 10px #cbd2d9, -4px -4px 10px #ffffff',
-            'neu-inset': 'inset 5px 5px 11px #cbd2d9, inset -5px -5px 11px #ffffff',
-            'neu-pill': '0 14px 32px -6px rgba(15,23,42,0.12), 6px 6px 14px #cbd2d9, -6px -6px 14px #ffffff',
-            'dark-neu-flat': '8px 8px 18px #121419, -8px -8px 18px #2A2F39',
-            'dark-neu-sm': '4px 4px 10px #121419, -4px -4px 10px #2A2F39',
-            'dark-neu-inset': 'inset 5px 5px 11px #121419, inset -5px -5px 11px #2A2F39',
-            'dark-neu-pill': '0 16px 36px -6px rgba(0,0,0,0.6), 6px 6px 14px #121419, -6px -6px 14px #2A2F39',
+            'glass': '0 8px 32px rgba(15,23,42,0.10), inset 0 1px 0 rgba(255,255,255,0.7)',
+            'glass-dark': '0 12px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08)',
+            'neu-inset': 'inset 3px 3px 8px rgba(15,23,42,0.08), inset -3px -3px 8px rgba(255,255,255,0.8)',
+            'neu-inset-dark': 'inset 3px 3px 8px rgba(0,0,0,0.5), inset -3px -3px 8px rgba(255,255,255,0.04)',
           },
           keyframes: {
             fadeUp: { '0%': { opacity: '0', transform: 'translateY(14px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
             fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
           },
           animation: {
-            'fade-up': 'fadeUp 0.55s cubic-bezier(0.16,1,0.3,1) both',
-            'fade-up-delay': 'fadeUp 0.65s cubic-bezier(0.16,1,0.3,1) 0.08s both',
-            'fade-in': 'fadeIn 0.35s ease-out both',
+            'fade-up': 'fadeUp .6s cubic-bezier(.16,1,.3,1) both',
+            'fade-up-delay': 'fadeUp .7s cubic-bezier(.16,1,.3,1) .08s both',
+            'fade-in': 'fadeIn .35s ease-out both',
           },
         },
       },
@@ -46,67 +40,125 @@
   </script>
 
   <style>
-    :root { color-scheme: light; }
-    html.dark { color-scheme: dark; }
+    :root {
+      color-scheme: light;
+      --bg: #E8ECEF;
+      --bg-soft: #dfe4e8;
+      --text: #0f172a;
+      --muted: #64748b;
+      --glass-fill: rgba(255,255,255,0.42);
+      --glass-fill-strong: rgba(255,255,255,0.62);
+      --glass-border: rgba(255,255,255,0.7);
+      --glass-shadow: 0 8px 32px rgba(15,23,42,0.10), inset 0 1px 0 rgba(255,255,255,0.8);
+      --accent: #059669;
+      --accent-2: #14b8a6;
+    }
+    html.dark {
+      color-scheme: dark;
+      --bg: #1B1E25;
+      --bg-soft: #161920;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --glass-fill: rgba(255,255,255,0.06);
+      --glass-fill-strong: rgba(255,255,255,0.11);
+      --glass-border: rgba(255,255,255,0.12);
+      --glass-shadow: 0 12px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
+      --accent: #34d399;
+      --accent-2: #2dd4bf;
+    }
 
-    html, body { overflow-anchor: none; }
+    html, body { overflow-anchor: none; -webkit-tap-highlight-color: transparent; }
     html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      transition: background-color .5s ease, color .5s ease;
+    }
 
-    /* ===== Transisi tema (View Transition API) ===== */
+    /* ===== Transisi tema (View Transition, crossfade) ===== */
     ::view-transition-old(root),
-    ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+    ::view-transition-new(root) {
+      mix-blend-mode: normal;
+      animation-duration: .4s;
+      animation-timing-function: cubic-bezier(.22,1,.36,1);
+    }
     ::view-transition-old(root) { z-index: 1; }
     ::view-transition-new(root) { z-index: 9999; }
 
-    .theme-overlay {
-      position: fixed; inset: 0; z-index: 9998;
-      pointer-events: none; will-change: clip-path; transform: translateZ(0);
+    html.theme-fade, html.theme-fade * {
+      transition: background-color .3s ease, color .3s ease, border-color .3s ease !important;
     }
-    html.theme-switching *,
-    html.theme-switching *::before,
-    html.theme-switching *::after { transition: none !important; }
 
-    /* Transisi warna halus untuk elemen yang tidak sedang di-switch */
-    body, .surface { transition: background-color .6s ease, color .6s ease; }
-
-    /* ===== Ambient orb ===== */
+    /* ===== Latar ambient ===== */
+    .ambient {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
     .ambient-orb {
-      position: fixed; border-radius: 9999px; filter: blur(90px);
-      pointer-events: none; z-index: 0; opacity: .3; will-change: transform;
+      position: absolute; border-radius: 9999px; filter: blur(70px);
+      opacity: .35; will-change: transform;
     }
-    .dark .ambient-orb { opacity: .14; }
-    .orb-1 { width: 42vmax; height: 42vmax; top: -12vmax; left: -10vmax; background: #34d399; animation: orbFloat1 22s ease-in-out infinite; }
-    .orb-2 { width: 36vmax; height: 36vmax; bottom: -10vmax; right: -8vmax; background: #14b8a6; animation: orbFloat2 26s ease-in-out infinite; }
+    .dark .ambient-orb { opacity: .16; }
+    .orb-1 { width: 46vmax; height: 46vmax; top: -14vmax; left: -12vmax; background: #34d399; animation: orbFloat1 24s ease-in-out infinite; }
+    .orb-2 { width: 40vmax; height: 40vmax; bottom: -12vmax; right: -10vmax; background: #14b8a6; animation: orbFloat2 28s ease-in-out infinite; }
+    .orb-3 { width: 26vmax; height: 26vmax; top: 40%; left: 55%; background: #a7f3d0; animation: orbFloat1 32s ease-in-out infinite reverse; opacity: .25; }
     @keyframes orbFloat1 { 0%,100%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(6vmax,4vmax,0) scale(1.08)} }
     @keyframes orbFloat2 { 0%,100%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(-5vmax,-4vmax,0) scale(1.06)} }
 
+    /* ===== Efek kaca (Liquid Glass) ===== */
+    .glass {
+      position: relative;
+      background: linear-gradient(135deg, var(--glass-fill-strong) 0%, var(--glass-fill) 60%, var(--glass-fill) 100%);
+      -webkit-backdrop-filter: blur(22px) saturate(180%) brightness(1.04);
+      backdrop-filter: blur(22px) saturate(180%) brightness(1.04);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      transition: transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s ease, background .45s ease;
+      isolation: isolate;
+    }
+    /* Pantulan cahaya tipis di tepi atas (specular) */
+    .glass::before {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: -1;
+      background: linear-gradient(160deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 70%, rgba(255,255,255,.15) 100%);
+      opacity: .75;
+    }
+    .dark .glass::before {
+      background: linear-gradient(160deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 70%, rgba(255,255,255,.04) 100%);
+    }
+    /* Sorot kursor/sentuh pada kartu */
+    .glass-spot::after {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background: radial-gradient(220px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.28), transparent 60%);
+      opacity: 0; transition: opacity .4s ease; z-index: 0;
+    }
+    .glass-spot:hover::after, .glass-spot.is-touched::after { opacity: 1; }
+
+    .glass-soft {
+      background: var(--glass-fill);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid var(--glass-border);
+    }
+
     main, header, footer { position: relative; z-index: 1; }
 
-    /* ===== Navbar menyusut ===== */
-    #siteNav { transition: height .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease; }
+    /* ===== Navbar kaca mengambang ===== */
+    #siteNav {
+      transition: height .45s cubic-bezier(.22,1,.36,1), box-shadow .45s ease, transform .45s cubic-bezier(.22,1,.36,1);
+    }
     #siteNav.is-scrolled { height: 3.5rem; }
     @media (min-width: 640px) { #siteNav.is-scrolled { height: 3.75rem; } }
 
-    /* ===== Kartu: sorot kursor ===== */
-    .spot-card { position: relative; overflow: hidden; isolation: isolate; }
-    .spot-card::before {
-      content: ""; position: absolute; inset: 0; border-radius: inherit;
-      background: radial-gradient(260px circle at var(--mx,50%) var(--my,50%), rgba(16,185,129,.12), transparent 60%);
-      opacity: 0; transition: opacity .4s ease; pointer-events: none; z-index: 0;
-    }
-    .spot-card:hover::before { opacity: 1; }
-    .spot-card > * { position: relative; z-index: 1; }
+    /* ===== Tombol ===== */
+    .btn-press { transition: transform .18s cubic-bezier(.22,1,.36,1), box-shadow .25s ease, background .25s ease, filter .25s ease; }
+    .btn-press:active { transform: scale(.94); }
 
     /* ===== Reveal saat scroll ===== */
     .js-ready .reveal {
-      opacity: 0; transform: translateY(22px) scale(.985);
+      opacity: 0; transform: translateY(20px) scale(.985);
       transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
       transition-delay: var(--delay, 0ms);
     }
     .js-ready .reveal.is-visible { opacity: 1; transform: none; }
-
-    .btn-press { transition: transform .18s cubic-bezier(.22,1,.36,1), box-shadow .25s ease, filter .25s ease; }
-    .btn-press:active { transform: scale(.96); }
 
     .count-pop { display: inline-block; }
     .count-pop.is-popping { animation: countPop .45s cubic-bezier(.22,1,.36,1); }
@@ -116,21 +168,54 @@
     .img-reveal.is-loading { opacity: 0; transform: scale(.98); }
     .zoomable { cursor: zoom-in; }
 
+    /* ===== Splash screen ===== */
+    #splash {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem;
+      background: var(--bg);
+      transition: opacity .7s cubic-bezier(.22,1,.36,1), visibility .7s;
+    }
+    #splash.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
+    #splash .splash-logo {
+      width: 96px; height: 96px; border-radius: 28px;
+      background: linear-gradient(135deg, #059669, #0f766e);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 20px 50px -10px rgba(5,150,105,.45), inset 0 1px 0 rgba(255,255,255,.35);
+      animation: splashIn .9s cubic-bezier(.16,1,.3,1) both;
+    }
+    #splash .splash-title {
+      font-weight: 800; font-size: 1.25rem; letter-spacing: -.02em; color: var(--text);
+      animation: splashIn .9s cubic-bezier(.16,1,.3,1) .15s both;
+    }
+    #splash .splash-sub {
+      font-size: .75rem; color: var(--muted);
+      animation: splashIn .9s cubic-bezier(.16,1,.3,1) .25s both;
+    }
+    #splash .splash-bar {
+      width: 120px; height: 4px; border-radius: 9999px; overflow: hidden;
+      background: var(--glass-fill); border: 1px solid var(--glass-border);
+      animation: splashIn .9s cubic-bezier(.16,1,.3,1) .35s both;
+    }
+    #splash .splash-bar span {
+      display: block; height: 100%; width: 40%; border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      animation: splashSlide 1.3s ease-in-out infinite;
+    }
+    @keyframes splashIn { from { opacity: 0; transform: translateY(12px) scale(.96); } to { opacity: 1; transform: none; } }
+    @keyframes splashSlide { 0% { transform: translateX(-100%); } 100% { transform: translateX(260%); } }
+
     /* ===== Overlay loading ===== */
     #loadingOverlay {
       position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center;
-      padding: 1rem; background: rgba(232,236,239,.45);
-      -webkit-backdrop-filter: blur(14px) saturate(120%); backdrop-filter: blur(14px) saturate(120%);
+      padding: 1rem; background: rgba(0,0,0,.15);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
       opacity: 0; visibility: hidden; transition: opacity .45s ease, visibility .45s ease;
     }
-    .dark #loadingOverlay { background: rgba(27,30,37,.55); }
     #loadingOverlay.is-active { opacity: 1; visibility: visible; }
     .loading-card {
-      width: 100%; max-width: 340px; padding: 1.75rem 1.5rem; border-radius: 1.75rem;
-      background: #E8ECEF; box-shadow: 8px 8px 18px #cbd2d9, -8px -8px 18px #ffffff; text-align: center;
-      transform: translateY(12px) scale(.96); transition: transform .55s cubic-bezier(.16,1,.3,1), background-color .6s ease;
+      width: 100%; max-width: 340px; padding: 1.75rem 1.5rem; border-radius: 1.75rem; text-align: center;
+      transform: translateY(12px) scale(.96); transition: transform .55s cubic-bezier(.16,1,.3,1);
     }
-    .dark .loading-card { background: #1B1E25; box-shadow: 8px 8px 18px #121419, -8px -8px 18px #2A2F39; }
     #loadingOverlay.is-active .loading-card { transform: none; }
 
     .loader-ring { position: relative; width: 76px; height: 76px; margin: 0 auto 1.25rem; }
@@ -141,8 +226,7 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes pulseDot { 0%,100%{transform:scale(.7);opacity:.6} 50%{transform:scale(1.05);opacity:1} }
 
-    .loader-bar { height: 6px; border-radius: 9999px; background: #E8ECEF; box-shadow: inset 3px 3px 6px #cbd2d9, inset -3px -3px 6px #ffffff; overflow: hidden; }
-    .dark .loader-bar { background: #1B1E25; box-shadow: inset 3px 3px 6px #121419, inset -3px -3px 6px #2A2F39; }
+    .loader-bar { height: 6px; border-radius: 9999px; background: var(--glass-fill); border: 1px solid var(--glass-border); overflow: hidden; }
     .loader-bar-fill {
       height: 100%; width: 0%; border-radius: 9999px;
       background: linear-gradient(90deg,#059669,#14b8a6,#059669); background-size: 200% 100%;
@@ -165,11 +249,11 @@
       padding: .75rem; opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility .35s ease;
     }
     .lb-root.is-open { opacity: 1; visibility: visible; }
-    .lb-backdrop { position: absolute; inset: 0; background: rgba(15,23,42,.72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+    .lb-backdrop { position: absolute; inset: 0; background: rgba(15,23,42,.45); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
     .lb-card {
       position: relative; width: 100%; max-width: 1100px; height: min(86vh, 820px);
-      display: flex; flex-direction: column; border-radius: 1.5rem; background: #0f1216; overflow: hidden;
-      box-shadow: 0 30px 80px -20px rgba(0,0,0,.6);
+      display: flex; flex-direction: column; border-radius: 1.75rem; background: #0f1216; overflow: hidden;
+      box-shadow: 0 30px 80px -20px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.08);
       transform: translateY(22px) scale(.94); opacity: 0;
       transition: transform .55s cubic-bezier(.16,1,.3,1), opacity .4s ease;
     }
@@ -179,10 +263,10 @@
     .lb-tools { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
     .lb-btn {
       min-width: 36px; min-height: 36px; padding: 0 .6rem; border-radius: .75rem;
-      color: rgba(255,255,255,.85); background: rgba(255,255,255,.06); font-size: .8rem; font-weight: 600;
+      color: rgba(255,255,255,.9); background: rgba(255,255,255,.08); font-size: .8rem; font-weight: 600;
       transition: background .2s ease, transform .15s ease;
     }
-    .lb-btn:hover { background: rgba(255,255,255,.14); color: #fff; }
+    .lb-btn:hover { background: rgba(255,255,255,.16); color: #fff; }
     .lb-btn:active { transform: scale(.92); }
     .lb-zoom-label { min-width: 52px; text-align: center; font-size: .75rem; font-weight: 700; color: #6ee7b7; font-variant-numeric: tabular-nums; }
     .lb-stage {
@@ -203,6 +287,15 @@
     /* ===== Compare slider ===== */
     #compareBeforeWrap { clip-path: inset(0 50% 0 0); }
 
+    /* ===== HP: lebih ringan ===== */
+    @media (max-width: 639px) {
+      .ambient-orb { filter: blur(56px); }
+      .glass { -webkit-backdrop-filter: blur(16px) saturate(170%); backdrop-filter: blur(16px) saturate(170%); }
+      .glass-soft { -webkit-backdrop-filter: blur(12px) saturate(150%); backdrop-filter: blur(12px) saturate(150%); }
+      #loadingOverlay { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+      .orb-3 { display: none; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: .01ms !important; animation-iteration-count: 1 !important;
@@ -210,32 +303,50 @@
       }
       .ambient-orb { animation: none !important; }
       .js-ready .reveal { opacity: 1; transform: none; }
+      #splash { display: none; }
     }
   </style>
 </head>
 
-<body id="top" class="bg-[#E8ECEF] dark:bg-[#1B1E25] text-slate-800 dark:text-slate-100 min-h-screen font-sans antialiased selection:bg-emerald-600/20 selection:text-emerald-900 dark:selection:text-emerald-200 overflow-x-hidden">
+<body id="top" class="min-h-screen font-sans antialiased selection:bg-emerald-600/20 selection:text-emerald-900 dark:selection:text-emerald-200 overflow-x-hidden">
 
-  <div class="ambient-orb orb-1" aria-hidden="true"></div>
-  <div class="ambient-orb orb-2" aria-hidden="true"></div>
+  <!-- Splash screen -->
+  <div id="splash" aria-hidden="true">
+    <div class="splash-logo">
+      <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 7V5a2 2 0 012-2h2m10 0h2a2 2 0 012 2v2m0 10v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2" />
+        <ellipse cx="12" cy="12" rx="4.5" ry="2.2" transform="rotate(-35 12 12)" fill="currentColor" stroke="none" />
+      </svg>
+    </div>
+    <p class="splash-title">RiceVision</p>
+    <p class="splash-sub">Penghitung Butiran Beras</p>
+    <div class="splash-bar"><span></span></div>
+  </div>
+
+  <!-- Latar ambient -->
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+  </div>
 
   <!-- Overlay loading -->
   <div id="loadingOverlay" role="status" aria-live="polite" aria-hidden="true">
-    <div class="loading-card">
+    <div class="loading-card glass">
       <div class="loader-ring" aria-hidden="true"><span></span><span></span><span></span></div>
-      <p class="text-sm font-bold text-slate-900 dark:text-white">Memproses Citra</p>
-      <p id="loadingStep" class="loader-step mt-1.5 text-xs text-slate-500 dark:text-slate-400 min-h-[1rem]">Memuat citra...</p>
+      <p class="text-sm font-bold" style="color:var(--text)">Memproses Citra</p>
+      <p id="loadingStep" class="loader-step mt-1.5 text-xs min-h-[1rem]" style="color:var(--muted)">Memuat citra...</p>
       <div class="mt-5 loader-bar"><div id="loadingBar" class="loader-bar-fill"></div></div>
-      <p class="mt-2.5 text-[11px] font-semibold tabular-nums text-emerald-700 dark:text-emerald-400"><span id="loadingPct">0</span>%</p>
+      <p class="mt-2.5 text-[11px] font-semibold tabular-nums" style="color:var(--accent)"><span id="loadingPct">0</span>%</p>
     </div>
   </div>
 
   <!-- Toast -->
   <div id="toastContainer" class="fixed top-24 right-4 left-4 sm:left-auto sm:right-6 z-[90] flex flex-col gap-2.5 sm:max-w-sm pointer-events-none"></div>
 
-  <!-- Navbar -->
-  <header class="sticky top-3.5 sm:top-5 z-40 px-3.5 sm:px-6 lg:px-8">
-    <nav id="siteNav" class="max-w-6xl mx-auto h-14 sm:h-16 px-3 sm:px-5 rounded-full bg-[#E8ECEF]/85 dark:bg-[#1B1E25]/85 backdrop-blur-2xl backdrop-saturate-150 border border-white/75 dark:border-white/[0.07] shadow-neu-pill dark:shadow-dark-neu-pill flex items-center justify-between gap-3">
+  <!-- Navbar kaca -->
+  <header class="sticky top-3 sm:top-5 z-40 px-3.5 sm:px-6 lg:px-8">
+    <nav id="siteNav" class="glass max-w-6xl mx-auto h-14 sm:h-16 px-3 sm:px-5 rounded-full flex items-center justify-between gap-3">
       <a href="#top" class="flex items-center gap-2.5 sm:gap-3 min-w-0 group pl-0.5">
         <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center shadow-md shadow-emerald-900/20 ring-1 ring-white/30 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
           <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -245,25 +356,25 @@
         </div>
         <div class="truncate">
           <div class="flex items-center gap-2">
-            <span class="font-bold text-sm sm:text-base tracking-tight text-slate-900 dark:text-white truncate">RiceVision</span>
-            <span class="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#E8ECEF] dark:bg-[#1B1E25] text-slate-600 dark:text-slate-300 shadow-neu-inset dark:shadow-dark-neu-inset">UAS Pengolahan Citra</span>
+            <span class="font-bold text-sm sm:text-base tracking-tight truncate" style="color:var(--text)">RiceVision</span>
+            <span class="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium glass-soft" style="color:var(--muted)">UAS Pengolahan Citra</span>
           </div>
-          <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">Top-Hat &bull; Otsu &bull; Segmentasi Adaptif</p>
+          <p class="text-[11px] truncate" style="color:var(--muted)">Top-Hat &bull; Otsu &bull; Segmentasi Adaptif</p>
         </div>
       </a>
 
       <div class="flex items-center gap-2 sm:gap-3 shrink-0 pr-0.5">
-        <div class="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset text-xs font-medium text-slate-600 dark:text-slate-300">
-          <span class="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse"></span>
-          Akurasi Uji: <span class="font-semibold text-slate-900 dark:text-white">96,00%</span>
+        <div class="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-soft text-xs font-medium" style="color:var(--muted)">
+          <span class="w-2 h-2 rounded-full animate-pulse" style="background:var(--accent)"></span>
+          Akurasi Uji: <span class="font-semibold" style="color:var(--text)">96,00%</span>
         </div>
 
         <button id="btnTheme" type="button" aria-label="Ubah tema terang atau gelap"
-          class="btn-press min-w-[40px] min-h-[40px] p-2 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm active:shadow-neu-inset dark:active:shadow-dark-neu-inset text-slate-700 dark:text-slate-200 flex items-center justify-center">
-          <svg id="iconSun" class="w-4 h-4 sm:w-5 sm:h-5 hidden dark:block text-amber-400" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
+          class="btn-press glass min-w-[40px] min-h-[40px] p-2 rounded-full flex items-center justify-center" style="color:var(--text)">
+          <svg id="iconSun" class="w-4 h-4 sm:w-5 sm:h-5 hidden dark:block" style="color:#fbbf24" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
           </svg>
-          <svg id="iconMoon" class="w-4 h-4 sm:w-5 sm:h-5 block dark:hidden text-slate-700" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
+          <svg id="iconMoon" class="w-4 h-4 sm:w-5 sm:h-5 block dark:hidden" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
           </svg>
         </button>
@@ -275,32 +386,32 @@
 
     <!-- Hero -->
     <section class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-5 animate-fade-up">
-      <div class="space-y-2 max-w-2xl">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm text-[11px] sm:text-xs font-medium text-slate-600 dark:text-slate-300">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400"></span>
+      <div class="space-y-3 max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-soft text-[11px] sm:text-xs font-medium" style="color:var(--muted)">
+          <span class="w-1.5 h-1.5 rounded-full" style="background:var(--accent)"></span>
           Segmentasi Citra Digital Berbasis Morfologi
         </div>
-        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight" style="color:var(--text)">
           Penghitungan Jumlah Butiran Beras
         </h1>
-        <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+        <p class="text-sm sm:text-base leading-relaxed" style="color:var(--muted)">
           Unggah citra sampel beras untuk menghitung jumlah butir secara otomatis dan membandingkan metode
-          <span class="font-semibold text-emerald-700 dark:text-emerald-400">Adaptif</span>,
-          <span class="font-semibold text-slate-800 dark:text-slate-200">Kontur Biasa</span>, dan
-          <span class="font-semibold text-slate-800 dark:text-slate-200">Watershed</span>.
+          <span class="font-semibold" style="color:var(--accent)">Adaptif</span>,
+          <span class="font-semibold" style="color:var(--text)">Kontur Biasa</span>, dan
+          <span class="font-semibold" style="color:var(--text)">Watershed</span>.
         </p>
       </div>
 
       <div id="actionToolbar" class="hidden grid grid-cols-3 sm:flex sm:flex-wrap items-center gap-2.5 w-full lg:w-auto">
-        <button id="btnCopySummary" type="button" class="btn-press min-h-[42px] inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm active:shadow-neu-inset dark:active:shadow-dark-neu-inset text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">
-          <svg class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+        <button id="btnCopySummary" type="button" class="btn-press glass min-h-[42px] inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium" style="color:var(--text)">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
           <span class="truncate">Salin</span>
         </button>
-        <button id="btnDownloadImg" type="button" class="btn-press min-h-[42px] inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm active:shadow-neu-inset dark:active:shadow-dark-neu-inset text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">
-          <svg class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+        <button id="btnDownloadImg" type="button" class="btn-press glass min-h-[42px] inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium" style="color:var(--text)">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
           <span class="truncate">PNG</span>
         </button>
-        <button id="btnExportCsv" type="button" class="btn-press min-h-[42px] inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm active:shadow-neu-inset dark:active:shadow-dark-neu-inset text-xs sm:text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+        <button id="btnExportCsv" type="button" class="btn-press glass min-h-[42px] inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" style="color:var(--accent)">
           <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
           <span class="truncate">CSV</span>
         </button>
@@ -311,97 +422,97 @@
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-fade-up-delay">
 
       <!-- Upload -->
-      <div class="reveal spot-card lg:col-span-7 bg-[#E8ECEF] dark:bg-[#1B1E25] rounded-3xl p-5 sm:p-7 shadow-neu-flat dark:shadow-dark-neu-flat flex flex-col justify-between">
+      <div class="reveal glass glass-spot lg:col-span-7 rounded-[1.75rem] p-5 sm:p-7 flex flex-col justify-between">
         <div class="flex items-center justify-between gap-2 mb-5">
           <div class="flex items-center gap-3 min-w-0">
-            <span class="w-8 h-8 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">1</span>
+            <span class="w-8 h-8 rounded-full glass-soft text-xs font-bold flex items-center justify-center shrink-0" style="color:var(--accent)">1</span>
             <div class="min-w-0">
-              <h2 class="text-sm sm:text-base font-semibold text-slate-900 dark:text-white truncate">Citra Sampel Beras</h2>
-              <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Pilih atau seret foto beras ke area di bawah</p>
+              <h2 class="text-sm sm:text-base font-semibold truncate" style="color:var(--text)">Citra Sampel Beras</h2>
+              <p class="text-xs truncate" style="color:var(--muted)">Pilih atau seret foto beras ke area di bawah</p>
             </div>
           </div>
-          <button id="btnResetFile" type="button" class="btn-press hidden shrink-0 text-xs font-medium text-rose-600 dark:text-rose-400 bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm active:shadow-neu-inset dark:active:shadow-dark-neu-inset px-3.5 py-1.5 rounded-full">Hapus</button>
+          <button id="btnResetFile" type="button" class="btn-press hidden shrink-0 text-xs font-medium text-rose-600 dark:text-rose-400 glass-soft px-3.5 py-1.5 rounded-full">Hapus</button>
         </div>
 
-        <div id="dropzone" class="relative group flex-1 min-h-[215px] sm:min-h-[255px] rounded-2xl bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset p-5 sm:p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-shadow duration-300" tabindex="0" role="button" aria-label="Pilih citra beras">
+        <div id="dropzone" class="relative group flex-1 min-h-[215px] sm:min-h-[255px] rounded-2xl glass-soft p-5 sm:p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300" tabindex="0" role="button" aria-label="Pilih citra beras">
           <input type="file" id="fileInput" accept="image/*" class="hidden" />
 
           <div id="dropzoneEmpty" class="space-y-3.5 pointer-events-none">
-            <div class="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-2xl bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm flex items-center justify-center text-emerald-700 dark:text-emerald-400 transition-transform duration-300 group-hover:-translate-y-1.5 group-hover:rotate-3">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-2xl glass flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-1.5 group-hover:rotate-3" style="color:var(--accent)">
               <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" /></svg>
             </div>
             <div>
-              <p class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100">Ketuk untuk pilih atau seret gambar</p>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Format JPG, JPEG, atau PNG &bull; Latar gelap memberikan hasil terbaik</p>
+              <p class="text-sm sm:text-base font-semibold" style="color:var(--text)">Ketuk untuk pilih atau seret gambar</p>
+              <p class="text-xs mt-1" style="color:var(--muted)">Format JPG, JPEG, atau PNG &bull; Latar gelap memberikan hasil terbaik</p>
             </div>
           </div>
 
           <div id="dropzonePreview" class="hidden w-full flex flex-col sm:flex-row items-center gap-4 sm:gap-5 text-center sm:text-left animate-fade-in">
-            <div class="w-full sm:w-44 h-44 rounded-2xl overflow-hidden bg-slate-950 p-1.5 shadow-neu-sm dark:shadow-dark-neu-sm shrink-0 flex items-center justify-center">
+            <div class="w-full sm:w-44 h-44 rounded-2xl overflow-hidden bg-slate-950 p-1.5 shrink-0 flex items-center justify-center ring-1 ring-white/10">
               <img id="localPreviewImg" alt="Pratinjau citra beras" class="w-full h-full object-contain rounded-xl" />
             </div>
             <div class="min-w-0 flex-1 space-y-2.5 w-full">
-              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm text-emerald-700 dark:text-emerald-300 text-xs font-medium">
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-soft text-xs font-medium" style="color:var(--accent)">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
                 Citra siap diproses
               </div>
-              <p id="fileName" class="text-sm sm:text-base font-semibold text-slate-900 dark:text-white truncate">-</p>
-              <div class="flex flex-wrap justify-center sm:justify-start gap-2 text-xs text-slate-600 dark:text-slate-300">
-                <span id="fileSize" class="px-3 py-1 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm font-medium">-</span>
-                <span id="fileDims" class="px-3 py-1 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm font-medium">-</span>
+              <p id="fileName" class="text-sm sm:text-base font-semibold truncate" style="color:var(--text)">-</p>
+              <div class="flex flex-wrap justify-center sm:justify-start gap-2 text-xs" style="color:var(--muted)">
+                <span id="fileSize" class="px-3 py-1 rounded-full glass-soft font-medium">-</span>
+                <span id="fileDims" class="px-3 py-1 rounded-full glass-soft font-medium">-</span>
               </div>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Ketuk area ini kapan saja untuk mengganti foto.</p>
+              <p class="text-xs" style="color:var(--muted)">Ketuk area ini kapan saja untuk mengganti foto.</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Parameter -->
-      <div class="reveal spot-card lg:col-span-5 bg-[#E8ECEF] dark:bg-[#1B1E25] rounded-3xl p-5 sm:p-7 shadow-neu-flat dark:shadow-dark-neu-flat flex flex-col justify-between gap-5" style="--delay: 120ms">
+      <div class="reveal glass glass-spot lg:col-span-5 rounded-[1.75rem] p-5 sm:p-7 flex flex-col justify-between gap-5" style="--delay: 120ms">
         <div class="space-y-4">
           <div class="flex items-center gap-3">
-            <span class="w-8 h-8 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">2</span>
+            <span class="w-8 h-8 rounded-full glass-soft text-xs font-bold flex items-center justify-center shrink-0" style="color:var(--accent)">2</span>
             <div>
-              <h2 class="text-sm sm:text-base font-semibold text-slate-900 dark:text-white">Parameter Segmentasi</h2>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Setelan optimal hasil evaluasi tuning</p>
+              <h2 class="text-sm sm:text-base font-semibold" style="color:var(--text)">Parameter Segmentasi</h2>
+              <p class="text-xs" style="color:var(--muted)">Setelan optimal hasil evaluasi tuning</p>
             </div>
           </div>
 
           <div>
-            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2.5">Preset Cepat</p>
+            <p class="text-xs font-medium mb-2.5" style="color:var(--muted)">Preset Cepat</p>
             <div class="grid grid-cols-3 gap-2.5">
-              <button type="button" data-blur="3" data-area="60" class="preset-btn btn-press min-h-[54px] px-2 py-2 rounded-2xl text-xs font-semibold bg-[#E8ECEF] dark:bg-[#1B1E25] text-center">
+              <button type="button" data-blur="3" data-area="60" class="preset-btn btn-press glass-soft min-h-[54px] px-2 py-2 rounded-2xl text-xs font-semibold text-center" style="color:var(--text)">
                 Optimal<span class="block text-[10px] font-normal opacity-80 mt-0.5">3 / 60 px</span>
               </button>
-              <button type="button" data-blur="3" data-area="30" class="preset-btn btn-press min-h-[54px] px-2 py-2 rounded-2xl text-xs font-semibold bg-[#E8ECEF] dark:bg-[#1B1E25] text-center">
+              <button type="button" data-blur="3" data-area="30" class="preset-btn btn-press glass-soft min-h-[54px] px-2 py-2 rounded-2xl text-xs font-semibold text-center" style="color:var(--text)">
                 Sensitif<span class="block text-[10px] font-normal opacity-75 mt-0.5">3 / 30 px</span>
               </button>
-              <button type="button" data-blur="5" data-area="90" class="preset-btn btn-press min-h-[54px] px-2 py-2 rounded-2xl text-xs font-semibold bg-[#E8ECEF] dark:bg-[#1B1E25] text-center">
+              <button type="button" data-blur="5" data-area="90" class="preset-btn btn-press glass-soft min-h-[54px] px-2 py-2 rounded-2xl text-xs font-semibold text-center" style="color:var(--text)">
                 Filter Kuat<span class="block text-[10px] font-normal opacity-75 mt-0.5">5 / 90 px</span>
               </button>
             </div>
           </div>
 
-          <div class="space-y-2 p-3.5 sm:p-4 rounded-2xl bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset">
+          <div class="space-y-2 p-3.5 sm:p-4 rounded-2xl glass-soft">
             <div class="flex justify-between items-center text-xs">
-              <label for="blurInput" class="font-semibold text-slate-700 dark:text-slate-200">Gaussian Blur (Kernel)</label>
-              <span id="blurVal" class="px-2.5 py-0.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm text-emerald-700 dark:text-emerald-300 font-bold tabular-nums">3 px</span>
+              <label for="blurInput" class="font-semibold" style="color:var(--text)">Gaussian Blur (Kernel)</label>
+              <span id="blurVal" class="px-2.5 py-0.5 rounded-full glass font-bold tabular-nums" style="color:var(--accent)">3 px</span>
             </div>
-            <input type="range" id="blurInput" min="1" max="11" step="2" value="3" class="w-full h-2 rounded-lg accent-emerald-600 dark:accent-emerald-400 cursor-pointer" />
-            <p class="text-[11px] text-slate-500 dark:text-slate-400">Menghaluskan noise ringan sebelum proses Top-Hat.</p>
+            <input type="range" id="blurInput" min="1" max="11" step="2" value="3" class="w-full h-2 rounded-lg cursor-pointer" style="accent-color:var(--accent)" />
+            <p class="text-[11px]" style="color:var(--muted)">Menghaluskan noise ringan sebelum proses Top-Hat.</p>
           </div>
 
-          <div class="space-y-2 p-3.5 sm:p-4 rounded-2xl bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset">
+          <div class="space-y-2 p-3.5 sm:p-4 rounded-2xl glass-soft">
             <div class="flex justify-between items-center text-xs">
-              <label for="areaInput" class="font-semibold text-slate-700 dark:text-slate-200">Luas Minimum Objek</label>
-              <span id="areaVal" class="px-2.5 py-0.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm text-emerald-700 dark:text-emerald-300 font-bold tabular-nums">60 px</span>
+              <label for="areaInput" class="font-semibold" style="color:var(--text)">Luas Minimum Objek</label>
+              <span id="areaVal" class="px-2.5 py-0.5 rounded-full glass font-bold tabular-nums" style="color:var(--accent)">60 px</span>
             </div>
-            <input type="range" id="areaInput" min="10" max="150" step="5" value="60" class="w-full h-2 rounded-lg accent-emerald-600 dark:accent-emerald-400 cursor-pointer" />
-            <p class="text-[11px] text-slate-500 dark:text-slate-400">Menyaring serpihan kecil di bawah batas piksel.</p>
+            <input type="range" id="areaInput" min="10" max="150" step="5" value="60" class="w-full h-2 rounded-lg cursor-pointer" style="accent-color:var(--accent)" />
+            <p class="text-[11px]" style="color:var(--muted)">Menyaring serpihan kecil di bawah batas piksel.</p>
           </div>
         </div>
 
-        <button id="btnProses" type="button" class="btn-press w-full min-h-[48px] py-3.5 px-5 rounded-full bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-600 hover:to-teal-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-sm sm:text-base shadow-neu-sm dark:shadow-dark-neu-sm flex items-center justify-center gap-2.5">
+        <button id="btnProses" type="button" class="btn-press w-full min-h-[48px] py-3.5 px-5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-sm sm:text-base shadow-lg shadow-emerald-900/25 ring-1 ring-white/25 flex items-center justify-center gap-2.5">
           <svg id="btnIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
           <svg id="btnSpinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
           <span id="btnLabel">Hitung Butiran Beras</span>
@@ -412,60 +523,60 @@
     <!-- Metrik -->
     <section id="hasilMetrics" class="hidden space-y-4 scroll-mt-28">
       <div class="flex flex-wrap items-center justify-between gap-2">
-        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2.5">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse"></span>
+        <h2 class="text-base sm:text-lg font-bold flex items-center gap-2.5" style="color:var(--text)">
+          <span class="w-2.5 h-2.5 rounded-full animate-pulse" style="background:var(--accent)"></span>
           Ringkasan Hasil Penghitungan
         </h2>
-        <span id="procTimeBadge" class="text-xs font-medium text-slate-600 dark:text-slate-300 px-3.5 py-1 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm">Waktu proses: - ms</span>
+        <span id="procTimeBadge" class="text-xs font-medium px-3.5 py-1 rounded-full glass-soft" style="color:var(--muted)">Waktu proses: - ms</span>
       </div>
 
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-        <div class="reveal spot-card col-span-2 sm:col-span-1 rounded-3xl p-5 sm:p-6 bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-flat dark:shadow-dark-neu-flat ring-1 ring-emerald-600/25 dark:ring-emerald-400/20 transition-transform duration-300 hover:-translate-y-1">
+        <div class="reveal glass glass-spot col-span-2 sm:col-span-1 rounded-[1.5rem] p-5 sm:p-6 ring-1 ring-emerald-400/30 transition-transform duration-300 hover:-translate-y-1">
           <div class="flex items-center justify-between gap-2">
-            <p class="text-[11px] uppercase tracking-wider text-emerald-700 dark:text-emerald-400 font-bold">Metode Adaptif</p>
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-700 dark:bg-emerald-500/20 text-white dark:text-emerald-300">UTAMA</span>
+            <p class="text-[11px] uppercase tracking-wider font-bold" style="color:var(--accent)">Metode Adaptif</p>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white bg-emerald-600/90">UTAMA</span>
           </div>
           <div class="mt-3 flex items-baseline gap-2">
-            <p id="resAdaptif" class="count-pop text-4xl font-extrabold text-slate-900 dark:text-white tabular-nums">0</p>
-            <span class="text-sm font-medium text-slate-500 dark:text-slate-400">butir</span>
+            <p id="resAdaptif" class="count-pop text-4xl font-extrabold tabular-nums" style="color:var(--text)">0</p>
+            <span class="text-sm font-medium" style="color:var(--muted)">butir</span>
           </div>
           <div id="resDetail" class="mt-3.5 flex flex-wrap gap-1.5 text-[11px]"></div>
         </div>
 
-        <div class="reveal spot-card rounded-3xl p-4 sm:p-6 bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-flat dark:shadow-dark-neu-flat transition-transform duration-300 hover:-translate-y-1" style="--delay: 80ms">
+        <div class="reveal glass glass-spot rounded-[1.5rem] p-4 sm:p-6 transition-transform duration-300 hover:-translate-y-1" style="--delay: 80ms">
           <div class="flex flex-wrap items-center justify-between gap-1.5">
-            <p class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Kontur</p>
-            <span id="deltaKontur" class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset text-slate-600 dark:text-slate-300 tabular-nums">0</span>
+            <p class="text-[11px] uppercase tracking-wider font-bold" style="color:var(--muted)">Kontur</p>
+            <span id="deltaKontur" class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold glass-soft tabular-nums" style="color:var(--muted)">0</span>
           </div>
           <div class="mt-3 flex items-baseline gap-1.5">
-            <p id="resKontur" class="count-pop text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tabular-nums">0</p>
-            <span class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400">butir</span>
+            <p id="resKontur" class="count-pop text-2xl sm:text-3xl font-bold tabular-nums" style="color:var(--text)">0</p>
+            <span class="text-xs sm:text-sm font-medium" style="color:var(--muted)">butir</span>
           </div>
-          <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-3 leading-snug">Under-count jika butir menempel.</p>
+          <p class="text-[11px] sm:text-xs mt-3 leading-snug" style="color:var(--muted)">Under-count jika butir menempel.</p>
         </div>
 
-        <div class="reveal spot-card rounded-3xl p-4 sm:p-6 bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-flat dark:shadow-dark-neu-flat transition-transform duration-300 hover:-translate-y-1" style="--delay: 160ms">
+        <div class="reveal glass glass-spot rounded-[1.5rem] p-4 sm:p-6 transition-transform duration-300 hover:-translate-y-1" style="--delay: 160ms">
           <div class="flex flex-wrap items-center justify-between gap-1.5">
-            <p class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Watershed</p>
-            <span id="deltaWatershed" class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset text-slate-600 dark:text-slate-300 tabular-nums">0</span>
+            <p class="text-[11px] uppercase tracking-wider font-bold" style="color:var(--muted)">Watershed</p>
+            <span id="deltaWatershed" class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold glass-soft tabular-nums" style="color:var(--muted)">0</span>
           </div>
           <div class="mt-3 flex items-baseline gap-1.5">
-            <p id="resWatershed" class="count-pop text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tabular-nums">0</p>
-            <span class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400">butir</span>
+            <p id="resWatershed" class="count-pop text-2xl sm:text-3xl font-bold tabular-nums" style="color:var(--text)">0</p>
+            <span class="text-xs sm:text-sm font-medium" style="color:var(--muted)">butir</span>
           </div>
-          <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-3 leading-snug">Distance transform + puncak lokal.</p>
+          <p class="text-[11px] sm:text-xs mt-3 leading-snug" style="color:var(--muted)">Distance transform + puncak lokal.</p>
         </div>
 
-        <div class="reveal spot-card col-span-2 sm:col-span-1 rounded-3xl p-5 sm:p-6 bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-flat dark:shadow-dark-neu-flat transition-transform duration-300 hover:-translate-y-1" style="--delay: 240ms">
+        <div class="reveal glass glass-spot col-span-2 sm:col-span-1 rounded-[1.5rem] p-5 sm:p-6 transition-transform duration-300 hover:-translate-y-1" style="--delay: 240ms">
           <div class="flex items-center justify-between gap-2">
-            <p class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Median Luas</p>
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset text-slate-600 dark:text-slate-300">ACUAN</span>
+            <p class="text-[11px] uppercase tracking-wider font-bold" style="color:var(--muted)">Median Luas</p>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold glass-soft" style="color:var(--muted)">ACUAN</span>
           </div>
           <div class="mt-3 flex items-baseline gap-2">
-            <p id="resMedian" class="count-pop text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tabular-nums">0</p>
-            <span class="text-sm font-medium text-slate-500 dark:text-slate-400">px&sup2;</span>
+            <p id="resMedian" class="count-pop text-2xl sm:text-3xl font-bold tabular-nums" style="color:var(--text)">0</p>
+            <span class="text-sm font-medium" style="color:var(--muted)">px&sup2;</span>
           </div>
-          <p class="text-xs text-slate-500 dark:text-slate-400 mt-3 leading-snug">Luas acuan 1 butir untuk estimasi klaster.</p>
+          <p class="text-xs mt-3 leading-snug" style="color:var(--muted)">Luas acuan 1 butir untuk estimasi klaster.</p>
         </div>
       </div>
     </section>
@@ -474,70 +585,70 @@
     <section id="hasilVisual" class="hidden space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Visualisasi Tahapan Citra</h2>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Ketuk gambar untuk memperbesar dan memeriksa detail penomoran butir.</p>
+          <h2 class="text-base sm:text-lg font-bold" style="color:var(--text)">Visualisasi Tahapan Citra</h2>
+          <p class="text-xs" style="color:var(--muted)">Ketuk gambar untuk memperbesar dan memeriksa detail penomoran butir.</p>
         </div>
 
-        <div class="relative grid grid-cols-2 p-1.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset w-full sm:w-[330px] select-none">
-          <span id="tabSliderPill" aria-hidden="true" class="pointer-events-none absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-0.375rem)] rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"></span>
-          <button id="tabGrid" type="button" class="relative z-10 min-h-[38px] px-3 py-1.5 rounded-full text-xs font-semibold text-slate-900 dark:text-white transition-colors duration-300">Tampilan 3 Tahap</button>
-          <button id="tabCompare" type="button" class="relative z-10 min-h-[38px] px-3 py-1.5 rounded-full text-xs font-semibold text-slate-600 dark:text-slate-400 transition-colors duration-300">Slider Bandingkan</button>
+        <div class="relative grid grid-cols-2 p-1.5 rounded-full glass-soft w-full sm:w-[330px] select-none">
+          <span id="tabSliderPill" aria-hidden="true" class="pointer-events-none absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-0.375rem)] rounded-full glass transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"></span>
+          <button id="tabGrid" type="button" class="relative z-10 min-h-[38px] px-3 py-1.5 rounded-full text-xs font-semibold transition-colors duration-300" style="color:var(--text)">Tampilan 3 Tahap</button>
+          <button id="tabCompare" type="button" class="relative z-10 min-h-[38px] px-3 py-1.5 rounded-full text-xs font-semibold transition-colors duration-300" style="color:var(--muted)">Slider Bandingkan</button>
         </div>
       </div>
 
       <div id="viewGrid" class="grid grid-cols-1 md:grid-cols-3 gap-5 animate-fade-in">
-        <div class="reveal spot-card bg-[#E8ECEF] dark:bg-[#1B1E25] rounded-3xl p-4 sm:p-5 shadow-neu-flat dark:shadow-dark-neu-flat flex flex-col gap-3.5 transition-transform duration-300 hover:-translate-y-1">
+        <div class="reveal glass glass-spot rounded-[1.5rem] p-4 sm:p-5 flex flex-col gap-3.5 transition-transform duration-300 hover:-translate-y-1">
           <div class="flex items-center justify-between gap-2">
-            <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">A. Citra Input (Asli)</h3>
-            <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset text-slate-500 dark:text-slate-400 shrink-0">RGB</span>
+            <h3 class="text-sm font-semibold truncate" style="color:var(--text)">A. Citra Input (Asli)</h3>
+            <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full glass-soft shrink-0" style="color:var(--muted)">RGB</span>
           </div>
-          <div class="relative group zoomable rounded-2xl overflow-hidden bg-black p-1.5 shadow-neu-inset dark:shadow-dark-neu-inset" data-zoom="imgAsli" data-title="A. Citra Input (Asli)" tabindex="0" role="button" aria-label="Perbesar citra input">
+          <div class="relative group zoomable rounded-2xl overflow-hidden bg-black p-1.5" data-zoom="imgAsli" data-title="A. Citra Input (Asli)" tabindex="0" role="button" aria-label="Perbesar citra input">
             <img id="imgAsli" alt="Citra input asli" class="img-reveal w-full h-56 sm:h-64 md:h-72 object-contain rounded-xl" />
-            <div class="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-[11px] font-medium sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">Perbesar</div>
+            <div class="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md text-white text-[11px] font-medium sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">Perbesar</div>
           </div>
         </div>
 
-        <div class="reveal spot-card bg-[#E8ECEF] dark:bg-[#1B1E25] rounded-3xl p-4 sm:p-5 shadow-neu-flat dark:shadow-dark-neu-flat flex flex-col gap-3.5 transition-transform duration-300 hover:-translate-y-1" style="--delay: 100ms">
+        <div class="reveal glass glass-spot rounded-[1.5rem] p-4 sm:p-5 flex flex-col gap-3.5 transition-transform duration-300 hover:-translate-y-1" style="--delay: 100ms">
           <div class="flex items-center justify-between gap-2">
-            <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">B. Mask Biner (Top-Hat)</h3>
-            <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset text-slate-500 dark:text-slate-400 shrink-0">Biner</span>
+            <h3 class="text-sm font-semibold truncate" style="color:var(--text)">B. Mask Biner (Top-Hat)</h3>
+            <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full glass-soft shrink-0" style="color:var(--muted)">Biner</span>
           </div>
-          <div class="relative group zoomable rounded-2xl overflow-hidden bg-black p-1.5 shadow-neu-inset dark:shadow-dark-neu-inset" data-zoom="imgBiner" data-title="B. Mask Biner (Top-Hat + Thresholding Otsu)" tabindex="0" role="button" aria-label="Perbesar mask biner">
+          <div class="relative group zoomable rounded-2xl overflow-hidden bg-black p-1.5" data-zoom="imgBiner" data-title="B. Mask Biner (Top-Hat + Thresholding Otsu)" tabindex="0" role="button" aria-label="Perbesar mask biner">
             <img id="imgBiner" alt="Mask biner hasil segmentasi" class="img-reveal w-full h-56 sm:h-64 md:h-72 object-contain rounded-xl" />
-            <div class="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-[11px] font-medium sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">Perbesar</div>
+            <div class="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md text-white text-[11px] font-medium sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">Perbesar</div>
           </div>
         </div>
 
-        <div class="reveal spot-card bg-[#E8ECEF] dark:bg-[#1B1E25] rounded-3xl p-4 sm:p-5 shadow-neu-flat dark:shadow-dark-neu-flat ring-1 ring-emerald-600/25 dark:ring-emerald-400/20 flex flex-col gap-3.5 transition-transform duration-300 hover:-translate-y-1" style="--delay: 200ms">
+        <div class="reveal glass glass-spot rounded-[1.5rem] p-4 sm:p-5 flex flex-col gap-3.5 ring-1 ring-emerald-400/30 transition-transform duration-300 hover:-translate-y-1" style="--delay: 200ms">
           <div class="flex items-center justify-between gap-2">
-            <h3 class="text-sm font-semibold text-emerald-800 dark:text-emerald-300 truncate">C. Hasil &amp; Penomoran</h3>
+            <h3 class="text-sm font-semibold truncate" style="color:var(--accent)">C. Hasil &amp; Penomoran</h3>
             <div class="flex items-center gap-2 text-[10px] font-semibold shrink-0">
-              <span class="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Tunggal</span>
-              <span class="inline-flex items-center gap-1 text-amber-700 dark:text-amber-400"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Klaster</span>
+              <span class="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Tunggal</span>
+              <span class="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Klaster</span>
             </div>
           </div>
-          <div class="relative group zoomable rounded-2xl overflow-hidden bg-black p-1.5 shadow-neu-inset dark:shadow-dark-neu-inset" data-zoom="imgHasil" data-title="C. Hasil Segmentasi &amp; Penomoran Butir Beras" tabindex="0" role="button" aria-label="Perbesar hasil segmentasi">
+          <div class="relative group zoomable rounded-2xl overflow-hidden bg-black p-1.5" data-zoom="imgHasil" data-title="C. Hasil Segmentasi &amp; Penomoran Butir Beras" tabindex="0" role="button" aria-label="Perbesar hasil segmentasi">
             <img id="imgHasil" alt="Hasil segmentasi dan penomoran beras" class="img-reveal w-full h-56 sm:h-64 md:h-72 object-contain rounded-xl" />
             <div class="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-emerald-700/85 backdrop-blur-md text-white text-[11px] font-medium sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">Perbesar</div>
           </div>
         </div>
       </div>
 
-      <div id="viewCompare" class="hidden bg-[#E8ECEF] dark:bg-[#1B1E25] rounded-3xl p-4 sm:p-6 shadow-neu-flat dark:shadow-dark-neu-flat space-y-4 animate-fade-in">
+      <div id="viewCompare" class="hidden glass rounded-[1.75rem] p-4 sm:p-6 space-y-4 animate-fade-in">
         <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-          <span class="font-medium text-slate-600 dark:text-slate-300">Geser garis tengah untuk membandingkan Citra Asli dan Hasil Segmentasi</span>
-          <span id="sliderPct" class="px-3 py-1 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset text-emerald-800 dark:text-emerald-300 font-bold tabular-nums">50%</span>
+          <span class="font-medium" style="color:var(--muted)">Geser garis tengah untuk membandingkan Citra Asli dan Hasil Segmentasi</span>
+          <span id="sliderPct" class="px-3 py-1 rounded-full glass font-bold tabular-nums" style="color:var(--accent)">50%</span>
         </div>
         <div class="flex justify-center w-full">
-          <div id="compareContainer" class="relative inline-block max-w-full rounded-2xl overflow-hidden bg-black shadow-neu-inset dark:shadow-dark-neu-inset select-none touch-none">
+          <div id="compareContainer" class="relative inline-block max-w-full rounded-2xl overflow-hidden bg-black select-none touch-none">
             <img id="compareAfter" alt="Sesudah segmentasi" class="block w-auto max-w-full max-h-[380px] sm:max-h-[500px] h-auto pointer-events-none" />
             <div id="compareBeforeWrap" class="absolute inset-0 overflow-hidden pointer-events-none">
               <img id="compareBefore" alt="Sebelum segmentasi" class="w-full h-full object-fill block" />
             </div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-medium pointer-events-none">Sebelum</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-medium pointer-events-none">Sebelum</span>
             <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-emerald-700/85 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-medium pointer-events-none">Sesudah</span>
             <div id="compareDivider" class="absolute top-0 bottom-0 w-0.5 bg-white/90 shadow-md pointer-events-none" style="left: 50%;">
-              <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white text-slate-900 shadow-lg flex items-center justify-center">
+              <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full glass flex items-center justify-center" style="color:var(--text)">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l-3 3 3 3m8-6l3 3-3 3" /></svg>
               </div>
             </div>
@@ -548,40 +659,40 @@
     </section>
 
     <!-- Riwayat -->
-    <section id="historySection" class="hidden reveal is-visible bg-[#E8ECEF] dark:bg-[#1B1E25] rounded-3xl p-5 sm:p-6 shadow-neu-flat dark:shadow-dark-neu-flat space-y-4">
+    <section id="historySection" class="hidden reveal is-visible glass rounded-[1.75rem] p-5 sm:p-6 space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 class="text-base font-bold text-slate-900 dark:text-white">Riwayat Pengujian Sesi</h2>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Daftar sampel yang telah dianalisis pada sesi ini (geser ke samping di HP).</p>
+          <h2 class="text-base font-bold" style="color:var(--text)">Riwayat Pengujian Sesi</h2>
+          <p class="text-xs" style="color:var(--muted)">Daftar sampel yang telah dianalisis pada sesi ini (geser ke samping di HP).</p>
         </div>
-        <button id="btnClearHistory" type="button" class="btn-press text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm active:shadow-neu-inset dark:active:shadow-dark-neu-inset px-3.5 py-1.5 rounded-full">Bersihkan</button>
+        <button id="btnClearHistory" type="button" class="btn-press text-xs font-medium glass-soft hover:text-rose-600 dark:hover:text-rose-400 px-3.5 py-1.5 rounded-full" style="color:var(--muted)">Bersihkan</button>
       </div>
-      <div class="overflow-x-auto rounded-2xl bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset p-3">
+      <div class="overflow-x-auto rounded-2xl glass-soft p-3">
         <table class="w-full min-w-[560px] text-left border-collapse text-xs sm:text-sm">
           <thead>
-            <tr class="border-b border-slate-300/60 dark:border-white/10 text-slate-500 dark:text-slate-400 text-[11px] uppercase tracking-wider">
+            <tr class="border-b text-[11px] uppercase tracking-wider" style="border-color:var(--glass-border); color:var(--muted)">
               <th class="py-3 px-3 font-semibold">#</th>
               <th class="py-3 px-3 font-semibold">Nama File</th>
               <th class="py-3 px-3 font-semibold">Parameter</th>
-              <th class="py-3 px-3 font-semibold text-emerald-700 dark:text-emerald-400">Adaptif</th>
+              <th class="py-3 px-3 font-semibold" style="color:var(--accent)">Adaptif</th>
               <th class="py-3 px-3 font-semibold">Kontur</th>
               <th class="py-3 px-3 font-semibold">Watershed</th>
               <th class="py-3 px-3 font-semibold">Median</th>
             </tr>
           </thead>
-          <tbody id="historyBody" class="divide-y divide-slate-300/40 dark:divide-white/[0.06] tabular-nums"></tbody>
+          <tbody id="historyBody" class="tabular-nums" style="color:var(--text)"></tbody>
         </table>
       </div>
     </section>
   </main>
 
-  <footer class="relative z-[1] max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+  <footer class="relative z-[1] max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-2 text-xs" style="color:var(--muted)">
     <p>Projek UAS Pengolahan Citra Digital &mdash; Sistem Penghitungan Butiran Beras</p>
     <p>OpenCV &bull; Scikit-Image &bull; Flask &bull; Tailwind CSS</p>
   </footer>
 
   <button id="btnScrollTop" type="button" aria-label="Kembali ke atas"
-    class="btn-press fixed bottom-5 right-5 z-30 opacity-0 pointer-events-none translate-y-3 min-w-[46px] min-h-[46px] p-2.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-sm dark:shadow-dark-neu-sm text-slate-700 dark:text-slate-200 transition-all duration-300 flex items-center justify-center">
+    class="btn-press glass fixed bottom-5 right-5 z-30 opacity-0 pointer-events-none translate-y-3 min-w-[46px] min-h-[46px] p-2.5 rounded-full flex items-center justify-center transition-all duration-300" style="color:var(--text)">
     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
   </button>
 
@@ -613,6 +724,7 @@
     const htmlEl = document.documentElement;
     const $ = (id) => document.getElementById(id);
 
+    const splash = $("splash");
     const btnTheme = $("btnTheme");
     const btnScrollTop = $("btnScrollTop");
     const siteNav = $("siteNav");
@@ -684,9 +796,7 @@
 
     const DARK_BG = "#1B1E25";
     const LIGHT_BG = "#E8ECEF";
-    const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
     const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
     /* ================= UTILITAS ================= */
     function esc(v) {
@@ -696,10 +806,10 @@
     function showToast(message, type = "info") {
       const container = $("toastContainer");
       const styles = {
-        success: "bg-emerald-700/95 text-white border-emerald-500/40",
-        error: "bg-rose-700/95 text-white border-rose-500/40",
-        warning: "bg-amber-600/95 text-white border-amber-400/40",
-        info: "bg-slate-900/90 text-white border-white/15",
+        success: "bg-emerald-700/90 text-white border-emerald-400/40",
+        error: "bg-rose-700/90 text-white border-rose-400/40",
+        warning: "bg-amber-600/90 text-white border-amber-300/40",
+        info: "bg-slate-900/80 text-white border-white/15",
       };
       const toast = document.createElement("div");
       toast.className = `pointer-events-auto backdrop-blur-xl flex items-center justify-between gap-3 px-4 py-3 rounded-2xl border shadow-lg text-xs sm:text-sm font-medium animate-fade-up transition-all duration-300 ${styles[type] || styles.info}`;
@@ -741,6 +851,19 @@
       if (m) m.setAttribute("content", isDark ? DARK_BG : LIGHT_BG);
     }
 
+    /* ================= SPLASH ================= */
+    function hideSplash() {
+      if (!splash) return;
+      splash.classList.add("is-done");
+      setTimeout(() => splash.remove(), 800);
+    }
+    window.addEventListener("load", () => {
+      const minShow = reduceMotion() ? 0 : 1100;
+      const elapsed = performance.now();
+      setTimeout(hideSplash, Math.max(0, minShow - elapsed));
+    });
+    setTimeout(hideSplash, 3000); // jaga-jaga jika load tertunda
+
     /* ================= TEMA ================= */
     (function initTheme() {
       let isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -752,49 +875,11 @@
       setMetaThemeColor(isDark);
     })();
 
-    /** Overlay lingkaran (HP/tablet) — tidak menyentuh layout. */
-    function overlayReveal(x, y, radius, bg, applyFn) {
-      return new Promise((resolve) => {
-        const ov = document.createElement("div");
-        ov.className = "theme-overlay";
-        ov.style.background = bg;
-        document.body.appendChild(ov);
-
-        const anim = ov.animate(
-          [
-            { clipPath: `circle(0px at ${x}px ${y}px)` },
-            { clipPath: `circle(${radius}px at ${x}px ${y}px)` },
-          ],
-          { duration: 750, easing: EASE, fill: "forwards" }
-        );
-
-        anim.onfinish = () => {
-          htmlEl.classList.add("theme-switching");
-          applyFn();
-          void document.body.offsetHeight;
-          ov.remove();
-          requestAnimationFrame(() => requestAnimationFrame(() => {
-            htmlEl.classList.remove("theme-switching");
-          }));
-          resolve();
-        };
-      });
-    }
-
     btnTheme.addEventListener("click", async () => {
       if (isThemeTransitioning) return;
       btnTheme.blur();
 
-      const rect = btnTheme.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
-      const endRadius = Math.hypot(
-        Math.max(x, window.innerWidth - x),
-        Math.max(y, window.innerHeight - y)
-      );
-
       const willBeDark = !htmlEl.classList.contains("dark");
-      const targetBg = willBeDark ? DARK_BG : LIGHT_BG;
 
       const applyThemeState = () => {
         htmlEl.classList.toggle("dark", willBeDark);
@@ -802,35 +887,29 @@
         try { localStorage.setItem("ricevision-theme", willBeDark ? "dark" : "light"); } catch (e) {}
       };
 
-      if (reduceMotion()) {
+      const icon = willBeDark ? $("iconSun") : $("iconMoon");
+
+      if (reduceMotion() || typeof document.startViewTransition !== "function") {
+        htmlEl.classList.add("theme-fade");
         applyThemeState();
+        setTimeout(() => htmlEl.classList.remove("theme-fade"), 350);
         return;
       }
 
       isThemeTransitioning = true;
-      const useVT = !isTouchDevice && typeof document.startViewTransition === "function";
-
       try {
-        if (useVT) {
-          const vt = document.startViewTransition(() => applyThemeState());
-          await vt.ready;
-          document.documentElement.animate(
-            { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`] },
-            { duration: 800, easing: EASE, pseudoElement: "::view-transition-new(root)" }
-          );
-          await vt.finished.catch(() => {});
-        } else {
-          await overlayReveal(x, y, endRadius, targetBg, applyThemeState);
-        }
+        const vt = document.startViewTransition(applyThemeState);
+        await vt.finished;
+      } catch (e) {
+        applyThemeState();
       } finally {
         isThemeTransitioning = false;
       }
 
-      const activeIcon = htmlEl.classList.contains("dark") ? $("iconSun") : $("iconMoon");
-      if (activeIcon && activeIcon.animate) {
-        activeIcon.animate(
-          [{ transform: "rotate(-120deg) scale(0.6)" }, { transform: "rotate(0deg) scale(1)" }],
-          { duration: 450, easing: EASE }
+      if (icon && icon.animate) {
+        icon.animate(
+          [{ transform: "rotate(-120deg) scale(.6)" }, { transform: "rotate(0deg) scale(1)" }],
+          { duration: 450, easing: "cubic-bezier(0.22,1,0.36,1)" }
         );
       }
     });
@@ -927,13 +1006,22 @@
     }
     observeReveals();
 
-    /* ================= SOROT KURSOR ================= */
-    document.querySelectorAll(".spot-card").forEach((card) => {
-      card.addEventListener("pointermove", (e) => {
+    /* ================= SOROT KACA (kursor & sentuh) ================= */
+    document.querySelectorAll(".glass-spot").forEach((card) => {
+      const update = (e) => {
         const r = card.getBoundingClientRect();
         card.style.setProperty("--mx", `${e.clientX - r.left}px`);
         card.style.setProperty("--my", `${e.clientY - r.top}px`);
+      };
+      card.addEventListener("pointermove", update);
+      card.addEventListener("pointerdown", (e) => {
+        update(e);
+        card.classList.add("is-touched");
       });
+      const clear = () => card.classList.remove("is-touched");
+      card.addEventListener("pointerup", clear);
+      card.addEventListener("pointerleave", clear);
+      card.addEventListener("pointercancel", clear);
     });
 
     /* ================= UPLOAD ================= */
@@ -970,12 +1058,12 @@
     });
     dropzone.addEventListener("dragover", (e) => {
       e.preventDefault();
-      dropzone.classList.add("ring-2", "ring-emerald-600/50");
+      dropzone.classList.add("ring-2", "ring-emerald-500/50");
     });
-    dropzone.addEventListener("dragleave", () => dropzone.classList.remove("ring-2", "ring-emerald-600/50"));
+    dropzone.addEventListener("dragleave", () => dropzone.classList.remove("ring-2", "ring-emerald-500/50"));
     dropzone.addEventListener("drop", (e) => {
       e.preventDefault();
-      dropzone.classList.remove("ring-2", "ring-emerald-600/50");
+      dropzone.classList.remove("ring-2", "ring-emerald-500/50");
       if (e.dataTransfer.files.length) handleFileSelect(e.dataTransfer.files[0]);
     });
 
@@ -995,14 +1083,9 @@
     function updatePresetHighlight() {
       presetButtons.forEach((btn) => {
         const match = btn.dataset.blur === blurInput.value && btn.dataset.area === areaInput.value;
-        btn.classList.toggle("text-emerald-700", match);
-        btn.classList.toggle("dark:text-emerald-400", match);
-        btn.classList.toggle("shadow-neu-inset", match);
-        btn.classList.toggle("dark:shadow-dark-neu-inset", match);
-        btn.classList.toggle("shadow-neu-sm", !match);
-        btn.classList.toggle("dark:shadow-dark-neu-sm", !match);
-        btn.classList.toggle("text-slate-700", !match);
-        btn.classList.toggle("dark:text-slate-300", !match);
+        btn.style.color = match ? "var(--accent)" : "var(--text)";
+        btn.classList.toggle("ring-1", match);
+        btn.classList.toggle("ring-emerald-400/50", match);
       });
     }
 
@@ -1084,9 +1167,9 @@
 
         $("resDetail").innerHTML =
           typeof data.butir_tunggal !== "undefined" && typeof data.butir_klaster !== "undefined"
-            ? `<span class="px-2.5 py-0.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset text-emerald-800 dark:text-emerald-300 font-medium">${esc(data.butir_tunggal)} tunggal</span>
-               <span class="px-2.5 py-0.5 rounded-full bg-[#E8ECEF] dark:bg-[#1B1E25] shadow-neu-inset dark:shadow-dark-neu-inset text-amber-800 dark:text-amber-300 font-medium">${esc(data.butir_klaster)} klaster</span>`
-            : `<span class="text-slate-500 dark:text-slate-400">Pemisahan berbasis luas median</span>`;
+            ? `<span class="px-2.5 py-0.5 rounded-full glass-soft font-medium" style="color:var(--accent)">${esc(data.butir_tunggal)} tunggal</span>
+               <span class="px-2.5 py-0.5 rounded-full glass-soft font-medium text-amber-600 dark:text-amber-400">${esc(data.butir_klaster)} klaster</span>`
+            : `<span style="color:var(--muted)">Pemisahan berbasis luas median</span>`;
 
         const dK = data.jumlah_kontur - data.jumlah_adaptif;
         const dW = data.jumlah_watershed - data.jumlah_adaptif;
@@ -1117,17 +1200,8 @@
     function setTab(mode) {
       const isGrid = mode === "grid";
       tabSliderPill.style.transform = isGrid ? "translateX(0)" : "translateX(100%)";
-
-      tabGrid.classList.toggle("text-slate-900", isGrid);
-      tabGrid.classList.toggle("dark:text-white", isGrid);
-      tabGrid.classList.toggle("text-slate-600", !isGrid);
-      tabGrid.classList.toggle("dark:text-slate-400", !isGrid);
-
-      tabCompare.classList.toggle("text-slate-900", !isGrid);
-      tabCompare.classList.toggle("dark:text-white", !isGrid);
-      tabCompare.classList.toggle("text-slate-600", isGrid);
-      tabCompare.classList.toggle("dark:text-slate-400", isGrid);
-
+      tabGrid.style.color = isGrid ? "var(--text)" : "var(--muted)";
+      tabCompare.style.color = isGrid ? "var(--muted)" : "var(--text)";
       viewCompare.classList.toggle("hidden", isGrid);
       viewGrid.classList.toggle("hidden", !isGrid);
     }
@@ -1149,14 +1223,14 @@
       }
       historySection.classList.remove("hidden");
       historyBody.innerHTML = sessionHistory.map((item, idx) => `
-        <tr class="hover:bg-slate-100/60 dark:hover:bg-white/[0.03] transition-colors duration-300">
-          <td class="py-3 px-3 text-slate-400">${sessionHistory.length - idx}</td>
-          <td class="py-3 px-3 font-medium text-slate-800 dark:text-slate-100 max-w-[180px] truncate" title="${esc(item.filename)}">${esc(item.filename)}</td>
-          <td class="py-3 px-3 text-slate-500 dark:text-slate-400">Blur ${esc(item.blur)} / Min ${esc(item.min_area)}px</td>
-          <td class="py-3 px-3 font-bold text-emerald-700 dark:text-emerald-400">${esc(item.jumlah_adaptif)} butir</td>
-          <td class="py-3 px-3 text-slate-700 dark:text-slate-300">${esc(item.jumlah_kontur)}</td>
-          <td class="py-3 px-3 text-slate-700 dark:text-slate-300">${esc(item.jumlah_watershed)}</td>
-          <td class="py-3 px-3 text-slate-700 dark:text-slate-300">${esc(item.median_area)} px&sup2;</td>
+        <tr class="transition-colors duration-300 hover:bg-white/10">
+          <td class="py-3 px-3" style="color:var(--muted)">${sessionHistory.length - idx}</td>
+          <td class="py-3 px-3 font-medium max-w-[180px] truncate" title="${esc(item.filename)}">${esc(item.filename)}</td>
+          <td class="py-3 px-3" style="color:var(--muted)">Blur ${esc(item.blur)} / Min ${esc(item.min_area)}px</td>
+          <td class="py-3 px-3 font-bold" style="color:var(--accent)">${esc(item.jumlah_adaptif)} butir</td>
+          <td class="py-3 px-3">${esc(item.jumlah_kontur)}</td>
+          <td class="py-3 px-3">${esc(item.jumlah_watershed)}</td>
+          <td class="py-3 px-3">${esc(item.median_area)} px&sup2;</td>
         </tr>`).join("");
     }
 
